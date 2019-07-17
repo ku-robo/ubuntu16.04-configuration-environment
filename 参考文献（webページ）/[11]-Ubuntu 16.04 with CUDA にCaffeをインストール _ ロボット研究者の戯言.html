@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<!-- saved from url=(0057)https://robotics4society.com/2016/06/15/ubuntu1604-caffe/ -->
+<html lang="ja"><!--<![endif]--><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+<meta name="format-detection" content="telephone=no">
+<title>Ubuntu 16.04 with CUDA にCaffeをインストール | ロボット研究者の戯言</title>
+<link rel="stylesheet" href="./[11]-Ubuntu 16.04 with CUDA にCaffeをインストール _ ロボット研究者の戯言_files/normalize.css">
+<link rel="stylesheet" href="./[11]-Ubuntu 16.04 with CUDA にCaffeをインストール _ ロボット研究者の戯言_files/style.css" type="text/css" media="screen">
+<link rel="alternate" type="application/rss+xml" title="ロボット研究者の戯言 RSS Feed" href="https://robotics4society.com/feed/">
+<link rel="pingback" href="https://robotics4society.com/xmlrpc.php">
+<link rel="shortcut icon" href="http://hikarie.net/wp-content/uploads/2015/11/icon.jpg">
+<link href="./[11]-Ubuntu 16.04 with CUDA にCaffeをインストール _ ロボット研究者の戯言_files/font-awesome.css" rel="stylesheet">
+<!--[if lt IE 9]>
+<script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
+<script src="https://robotics4society.com/wp-content/themes/stinger5ver20150505b/js/html5shiv.js"></script>
+<![endif]-->
+
+<!-- All in One SEO Pack 2.8 by Michael Torbert of Semper Fi Web Design[420,477] -->
+<meta name="description" content="最近ますますディープラーニングが熱くなっていますね． 私は取り急いで使うことがないのですが，近い将来使う予定なので少し触ってみようと思い，Ubuntu16.04にCaffeのインストールを試みました． 少しつまずいた点があるので，インストール手順とポイントを整理しておきます．">
+
+<link rel="canonical" href="https://robotics4society.com/2016/06/15/ubuntu1604-caffe/">
+			<script src="./[11]-Ubuntu 16.04 with CUDA にCaffeをインストール _ ロボット研究者の戯言_files/f(4).txt"></script><script src="./[11]-Ubuntu 16.04 with CUDA にCaffeをインストール _ ロボット研究者の戯言_files/cb=gapi.loaded_1" async=""></script><script src="./[11]-Ubuntu 16.04 with CUDA にCaffeをインストール _ ロボット研究者の戯言_files/osd.js.ダウンロード"></script><script src="./[11]-Ubuntu 16.04 with CUDA にCaffeをインストール _ ロボット研究者の戯言_files/ca-pub-7021391156101005.js.ダウンロード"></script><script src="./[11]-Ubuntu 16.04 with CUDA にCaffeをインストール _ ロボット研究者の戯言_files/cb=gapi(1).loaded_0" async=""></script><script type="text/javascript">
+				window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+				ga('create', 'UA-79368162-1', 'auto');
+				// Plugins
+				
+				ga('send', 'pageview');
+			</script>
+			<script async="" src="./[11]-Ubuntu 16.04 with CUDA にCaffeをインストール _ ロボット研究者の戯言_files/analytics.js.ダウンロード"></script>
+			<!-- /all in one seo pack -->
+<link rel="dns-prefetch" href="https://ajax.googleapis.com/">
+<link rel="dns-prefetch" href="https://s.w.org/">
+		<script type="text/javascript">
+			window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/11\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/11\/svg\/","svgExt":".svg","source":{"concatemoji":"https:\/\/robotics4society.com\/wp-includes\/js\/wp-emoji-release.min.js?ver=4.9.10"}};
+			!function(a,b,c){function d(a,b){var c=String.fromCharCode;l.clearRect(0,0,k.width,k.height),l.fillText(c.apply(this,a),0,0);var d=k.toDataURL();l.clearRect(0,0,k.width,k.height),l.fillText(c.apply(this,b),0,0);var e=k.toDataURL();return d===e}function e(a){var b;if(!l||!l.fillText)return!1;switch(l.textBaseline="top",l.font="600 32px Arial",a){case"flag":return!(b=d([55356,56826,55356,56819],[55356,56826,8203,55356,56819]))&&(b=d([55356,57332,56128,56423,56128,56418,56128,56421,56128,56430,56128,56423,56128,56447],[55356,57332,8203,56128,56423,8203,56128,56418,8203,56128,56421,8203,56128,56430,8203,56128,56423,8203,56128,56447]),!b);case"emoji":return b=d([55358,56760,9792,65039],[55358,56760,8203,9792,65039]),!b}return!1}function f(a){var c=b.createElement("script");c.src=a,c.defer=c.type="text/javascript",b.getElementsByTagName("head")[0].appendChild(c)}var g,h,i,j,k=b.createElement("canvas"),l=k.getContext&&k.getContext("2d");for(j=Array("flag","emoji"),c.supports={everything:!0,everythingExceptFlag:!0},i=0;i<j.length;i++)c.supports[j[i]]=e(j[i]),c.supports.everything=c.supports.everything&&c.supports[j[i]],"flag"!==j[i]&&(c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&c.supports[j[i]]);c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&!c.supports.flag,c.DOMReady=!1,c.readyCallback=function(){c.DOMReady=!0},c.supports.everything||(h=function(){c.readyCallback()},b.addEventListener?(b.addEventListener("DOMContentLoaded",h,!1),a.addEventListener("load",h,!1)):(a.attachEvent("onload",h),b.attachEvent("onreadystatechange",function(){"complete"===b.readyState&&c.readyCallback()})),g=c.source||{},g.concatemoji?f(g.concatemoji):g.wpemoji&&g.twemoji&&(f(g.twemoji),f(g.wpemoji)))}(window,document,window._wpemojiSettings);
+		</script><script src="./[11]-Ubuntu 16.04 with CUDA にCaffeをインストール _ ロボット研究者の戯言_files/wp-emoji-release.min.js.ダウンロード" type="text/javascript" defer=""></script>
+		<style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+<link rel="stylesheet" id="crayon-css" href="./[11]-Ubuntu 16.04 with CUDA にCaffeをインストール _ ロボット研究者の戯言_files/crayon.min.css" type="text/css" media="all">
+<link rel="stylesheet" id="crayon-theme-classic-css" href="./[11]-Ubuntu 16.04 with CUDA にCaffeをインストール _ ロボット研究者の戯言_files/classic.css" type="text/css" media="all">
+<link rel="stylesheet" id="crayon-font-monaco-css" href="./[11]-Ubuntu 16.04 with CUDA にCaffeをインストール _ ロボット研究者の戯言_files/monaco.css" type="text/css" media="all">
+<link rel="stylesheet" id="amazonjs-css" href="./[11]-Ubuntu 16.04 with CUDA にCaffeをインストール _ ロボット研究者の戯言_files/amazonjs.css" type="text/css" media="all">
+<script type="text/javascript" src="./[11]-Ubuntu 16.04 with CUDA にCaffeをインストール _ ロボット研究者の戯言_files/jquery.min.js.ダウンロード"></script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var CrayonSyntaxSettings = {"version":"_2.7.2_beta","is_admin":"0","ajaxurl":"https:\/\/robotics4society.com\/wp-admin\/admin-ajax.php","prefix":"crayon-","setting":"crayon-setting","selected":"crayon-setting-selected","changed":"crayon-setting-changed","special":"crayon-setting-special","orig_value":"data-orig-value","debug":""};
+var CrayonSyntaxStrings = {"copy":"Press %s to Copy, %s to Paste","minimize":"Click To Expand Code"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="./[11]-Ubuntu 16.04 with CUDA にCaffeをインストール _ ロボット研究者の戯言_files/crayon.min.js.ダウンロード"></script>
+<link rel="https://api.w.org/" href="https://robotics4society.com/wp-json/">
+<link rel="shortlink" href="https://robotics4society.com/?p=6">
+<link rel="alternate" type="application/json+oembed" href="https://robotics4society.com/wp-json/oembed/1.0/embed?url=https%3A%2F%2Frobotics4society.com%2F2016%2F06%2F15%2Fubuntu1604-caffe%2F">
+<link rel="alternate" type="text/xml+oembed" href="https://robotics4society.com/wp-json/oembed/1.0/embed?url=https%3A%2F%2Frobotics4society.com%2F2016%2F06%2F15%2Fubuntu1604-caffe%2F&amp;format=xml">
+<style type="text/css">
+/*グループ1
+------------------------------------------------------------*/
+/*ブログタイトル*/
+header .sitename a {
+ color: #000000;
+}
+/* メニュー */
+nav li a {
+ color: #000000;
+}
+/*キャプション */
+
+header h1 {
+ color: #000000;
+}
+header .descr {
+ color: #000000;
+}
+/* アコーディオン */
+#s-navi dt.trigger .op {
+	color: #000000;
+}
+.acordion_tree li a {
+	color: #000000;
+}
+/* サイド見出し */
+aside h4 {
+ color: #000000;
+}
+/* フッター文字 */
+#footer,#footer .copy {
+color: #000000;
+}
+/*グループ2
+------------------------------------------------------------*/
+/* 中見出し */
+h2 {
+ background: #81d742;
+ color: #ffffff;
+}
+h2:after {
+ border-top: 10px solid #81d742;
+}
+h2:before {
+ border-top: 10px solid #81d742;
+}
+/*小見出し*/
+.post h3 {
+ border-bottom: 1px #81d742 dotted;
+}
+/* 記事タイトル下の線 */
+.blogbox {
+ border-top-color: #81d742;
+ border-bottom-color: #81d742;
+}
+/* コメントボタン色 */
+#comments input[type="submit"] {
+background-color: #81d742;
+}
+#comments input[type="submit"] {
+color: #ffffff;
+}
+/*グループ3
+------------------------------------------------------------*/
+/* 記事タイトル下 */
+.blogbox {
+ background: #f3f3f3;
+}
+/*h4*/
+.post h4{
+background-color:#f3f3f3;
+}
+/* コメント */
+#comments {
+ background: #f3f3f3;
+}
+/* カレンダー曜日背景 */
+#wp-calendar thead tr th {
+ background: #f3f3f3;
+}
+/*グループ4
+------------------------------------------------------------*/
+/* RSSボタン */
+.rssbox a {
+	background-color: #81d742;
+}
+/*グループ5
+------------------------------------------------------------*/
+/* 検索フォーム */
+#s {
+ background: #c6d6be;
+}
+#searchsubmit{
+ background: #c6d6be;
+}
+
+</style>
+		<style type="text/css">.recentcomments a{display:inline !important;padding:0 !important;margin:0 !important;}</style>
+		<link rel="icon" href="https://robotics4society.com/wp-content/uploads/2016/06/cropped-logo-32x32.png" sizes="32x32">
+<link rel="icon" href="https://robotics4society.com/wp-content/uploads/2016/06/cropped-logo-192x192.png" sizes="192x192">
+<link rel="apple-touch-icon-precomposed" href="https://robotics4society.com/wp-content/uploads/2016/06/cropped-logo-180x180.png">
+<meta name="msapplication-TileImage" content="https://robotics4society.com/wp-content/uploads/2016/06/cropped-logo-270x270.png">
+
+<!-- MathJaxを使うための記述開始 -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({ tex2jax: { inlineMath: [['[math]','[/math]']] } });
+</script>
+<script type="text/javascript" src="./[11]-Ubuntu 16.04 with CUDA にCaffeをインストール _ ロボット研究者の戯言_files/MathJax.js.ダウンロード">
+</script>
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7">
+<!-- MathJaxを使うための記述終わり -->
+
+<script async="" src="./[11]-Ubuntu 16.04 with CUDA にCaffeをインストール _ ロボット研究者の戯言_files/f(5).txt"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-7021391156101005",
+    enable_page_level_ads: true
+  });
+</script>
+
+<link rel="preload" href="./[11]-Ubuntu 16.04 with CUDA にCaffeをインストール _ ロボット研究者の戯言_files/f(6).txt" as="script"><script type="text/javascript" src="./[11]-Ubuntu 16.04 with CUDA にCaffeをインストール _ ロボット研究者の戯言_files/f(6).txt"></script><link rel="preload" href="./[11]-Ubuntu 16.04 with CUDA にCaffeをインストール _ ロボット研究者の戯言_files/f(7).txt" as="script"><script type="text/javascript" src="./[11]-Ubuntu 16.04 with CUDA にCaffeをインストール _ ロボット研究者の戯言_files/f(7).txt"></script><link rel="preload" href="https://pagead2.googlesyndication.com/pagead/js/r20190318/r20190131/show_ads_impl.js" as="script"><script charset="utf-8" src="./[11]-Ubuntu 16.04 with CUDA にCaffeをインストール _ ロボット研究者の戯言_files/button.dd024c345fc26f7c7a8d9938b67e5d3d.js.ダウンロード"></script></head>
+<body class="post-template-default single single-post postid-6 single-format-standard">
+<!-- アコーディオン -->
+<nav id="s-navi" class="pcnone">
+  <dl class="acordion">
+    <dt class="trigger">
+      <p><span class="op"><i class="fa fa-bars"></i>&nbsp; MENU</span></p>
+    </dt>
+    <dd class="acordion_tree">
+      <ul>
+        <div class="menu"></div>
+      </ul>
+      <div class="clear"></div>
+    </dd>
+  </dl>
+</nav>
+<!-- /アコーディオン -->
+<div id="wrapper">
+<header> 
+  <!-- ロゴ又はブログ名 -->
+  <p class="sitename"><a href="https://robotics4society.com/">
+        </a></p><center><a href="https://robotics4society.com/"><img width="180px" height="180px" alt="ロボット研究者の戯言" src="./[11]-Ubuntu 16.04 with CUDA にCaffeをインストール _ ロボット研究者の戯言_files/robot4society-1.png"></a></center><a href="https://robotics4society.com/">
+        </a><p></p>
+  <!-- キャプション -->
+    <p class="descr">
+      </p>
+    
+  <!--
+カスタムヘッダー画像
+-->
+  <div id="gazou">
+      </div>
+  <!-- /gazou --> 
+  <!--
+メニュー
+-->
+  <nav class="smanone clearfix">
+    <div class="menu"></div>
+  </nav><div class="google-auto-placed" style="text-align: center; width: 100%; height: auto; clear: both;"><ins data-ad-format="auto" class="adsbygoogle adsbygoogle-noablate" data-ad-client="ca-pub-7021391156101005" data-adsbygoogle-status="done" style="display: block; margin: 10px auto; background-color: transparent; height: 90px;"><ins id="aswift_1_expand" style="display:inline-table;border:none;height:90px;margin:0;padding:0;position:relative;visibility:visible;width:980px;background-color:transparent;"><ins id="aswift_1_anchor" style="display:block;border:none;height:90px;margin:0;padding:0;position:relative;visibility:visible;width:980px;background-color:transparent;"><iframe width="980" height="90" frameborder="0" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" onload="var i=this.id,s=window.google_iframe_oncopy,H=s&amp;&amp;s.handlers,h=H&amp;&amp;H[i],w=this.contentWindow,d;try{d=w.document}catch(e){}if(h&amp;&amp;d&amp;&amp;(!d.body||!d.body.firstChild)){if(h.call){setTimeout(h,0)}else if(h.match){try{h=s.upd(h,i)}catch(e){}w.location.replace(h)}}" id="aswift_1" name="aswift_1" style="left:0;position:absolute;top:0;border:0px;width:980px;height:90px;" src="./[11]-Ubuntu 16.04 with CUDA にCaffeをインストール _ ロボット研究者の戯言_files/saved_resource(4).html"></iframe></ins></ins></ins></div>
+</header>
+
+<div id="content" class="clearfix">
+  <div id="contentInner">
+    <main>
+      <article>
+        <div class="post"> 
+          <!--ぱんくず -->
+          <div id="breadcrumb">
+            <div itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb"> <a href="https://robotics4society.com/" itemprop="url"> <span itemprop="title">ホーム</span> </a> &gt; </div>
+                                                                        <div itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb"> <a href="https://robotics4society.com/category/%e6%a9%9f%e6%a2%b0%e5%ad%a6%e7%bf%92/" itemprop="url"> <span itemprop="title">機械学習</span> </a> &gt; </div>
+                        <div itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb"> <a href="https://robotics4society.com/category/%e6%a9%9f%e6%a2%b0%e5%ad%a6%e7%bf%92/caffe/" itemprop="url"> <span itemprop="title">Caffe</span> </a> &gt; </div>
+                      </div>
+          <!--/ ぱんくず --> 
+          
+          <!--ループ開始 -->
+                    <h1 class="entry-title">
+            Ubuntu 16.04 with CUDA にCaffeをインストール          </h1>
+          <div class="blogbox">
+            <p><span class="kdate"><i class="fa fa-calendar"></i>&nbsp;
+              <time class="entry-date" datetime="2016-06-15T12:24:16+00:00">
+                2016/06/15              </time>
+              &nbsp;
+               <i class="fa fa-repeat"></i>&nbsp; 2018/02/27              </span> </p>
+          </div>
+          <h2>はじめに</h2>
+<p>最近ますますディープラーニングが熱くなっていますね．</p>
+<p>私は取り急いで使うことがないのですが，近い将来使う予定なので少し触ってみようと思い，Ubuntu16.04にCaffeのインストールを試みました．</p>
+<p>少しつまずいた点があるので，インストール手順とポイントを整理しておきます．</p>
+<h2>構築する環境</h2>
+<p>私が使用しているPCの構成は以下の通りです．</p>
+<p>OS : Ubuntu 16.04<br>
+CPU : AMD Phenom II X6 1100T<br>
+GPU : Nvidia GeForce GTX960<br>
+メモリ : 8GB</p>
+<p>え？AMDなんか使ってるの？って思われたかもしれませんが，安価な割に3.3GHzで6コアなので割と性能が良いです．ちなみに６年くらいに買ったCPUです．<br>
+</p><div class="google-auto-placed ap_container" style="text-align: center; width: 100%; height: auto; clear: none;"><ins data-ad-format="auto" class="adsbygoogle adsbygoogle-noablate" data-ad-client="ca-pub-7021391156101005" data-adsbygoogle-status="done" style="display: block; margin: auto; background-color: transparent;"><ins id="aswift_2_expand" style="display:inline-table;border:none;height:145px;margin:0;padding:0;position:relative;visibility:visible;width:580px;background-color:transparent;"><ins id="aswift_2_anchor" style="display:block;border:none;height:145px;margin:0;padding:0;position:relative;visibility:visible;width:580px;background-color:transparent;"><iframe width="580" height="145" frameborder="0" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" onload="var i=this.id,s=window.google_iframe_oncopy,H=s&amp;&amp;s.handlers,h=H&amp;&amp;H[i],w=this.contentWindow,d;try{d=w.document}catch(e){}if(h&amp;&amp;d&amp;&amp;(!d.body||!d.body.firstChild)){if(h.call){setTimeout(h,0)}else if(h.match){try{h=s.upd(h,i)}catch(e){}w.location.replace(h)}}" id="aswift_2" name="aswift_2" style="left:0;position:absolute;top:0;border:0px;width:580px;height:145px;" src="./[11]-Ubuntu 16.04 with CUDA にCaffeをインストール _ ロボット研究者の戯言_files/saved_resource(5).html"></iframe></ins></ins></ins></div><div data-role="amazonjs" data-asin="B004DALW5K" data-locale="JP" data-tmpl="" data-img-size="" class="asin_B004DALW5K_JP_ amazonjs_item"><div class="amazonjs_indicator"><span class="amazonjs_indicator_img"></span><a class="amazonjs_indicator_title" href="https://www.amazon.co.jp/AMD-PhenomII-TDP125W-3-3GHz%C3%976-HDE00ZFBGRBOX/dp/B004DALW5K?SubscriptionId=AKIAIETFORT3ZWQJZ5LQ&amp;tag=ty01wunsch-22&amp;linkCode=xm2&amp;camp=2025&amp;creative=165953&amp;creativeASIN=B004DALW5K">AMD PhenomII X6 1100T BE TDP125W 3.3GHz×6 HDE00ZFBGRBOX</a><span class="amazonjs_indicator_footer"></span></div></div><p></p>
+<p>余談ですが，CPUをハイスペックなものにするより，HDDをSSDに換装する方が何倍も幸せになれます．<br>
+重い処理をするなら高性能なCPUが必要ですが，最近はその役割はGPUに移行していますし，普通の使い方ならボトルネックとなるのはストレージのアクセス速度と思いますので．<br>
+最近はSSDの価格も安くなり，耐久性も向上しているので，TBオーダの大容量を求めなければSSDを買うのがベターですね．</p>
+<p>私は最近SanDiskのSSDとNvidiaのGPUを購入して使っています．<br>
+</p><div data-role="amazonjs" data-asin="B017BIMTMA" data-locale="JP" data-tmpl="" data-img-size="" class="asin_B017BIMTMA_JP_ amazonjs_item"><div class="amazonjs_indicator"><span class="amazonjs_indicator_img"></span><a class="amazonjs_indicator_title" href="https://www.amazon.co.jp/SanDisk-2-5%E3%82%A4%E3%83%B3%E3%83%81-UltraII-SATA3-0-SDSSDHII-480G-J26/dp/B017BIMTMA?psc=1&amp;SubscriptionId=AKIAIETFORT3ZWQJZ5LQ&amp;tag=ty01wunsch-22&amp;linkCode=xm2&amp;camp=2025&amp;creative=165953&amp;creativeASIN=B017BIMTMA">SanDisk SSD UltraII 480GB 2.5インチ 国内正規品メーカー3年保証付 SDSSDHII-480G-J26</a><span class="amazonjs_indicator_footer"></span></div></div><br>
+<div data-role="amazonjs" data-asin="B00UJK38YQ" data-locale="JP" data-tmpl="" data-img-size="" class="asin_B00UJK38YQ_JP_ amazonjs_item"><div class="amazonjs_indicator"><span class="amazonjs_indicator_img"></span><a class="amazonjs_indicator_title" href="https://www.amazon.co.jp/GIGABYTE-Geforce-GTX960%E6%90%AD%E8%BC%89-%E3%82%AA%E3%83%BC%E3%83%90%E3%83%BC%E3%82%AF%E3%83%AD%E3%83%83%E3%82%AF%E3%83%A2%E3%83%87%E3%83%AB-GV-N960WF2OC-4GD/dp/B00UJK38YQ?SubscriptionId=AKIAIETFORT3ZWQJZ5LQ&amp;tag=ty01wunsch-22&amp;linkCode=xm2&amp;camp=2025&amp;creative=165953&amp;creativeASIN=B00UJK38YQ">GIGABYTE ビデオカード Geforce GTX960搭載 オーバークロックモデル GV-N960WF2OC-4GD</a><span class="amazonjs_indicator_footer"></span></div></div><p></p>
+<h2>インストール手順</h2>
+<p>まず，全体の流れを確認しておきましょう．一例ですが，以下のような順番でインストールを行うと良いと思います．<br>
+なお，情報は2016年6月14日時点のものなので，今後変更があるかもしれません．</p>
+<ol>
+<li><strong>OpenCVのインストール</strong></li>
+<li><strong>GPUドライバのインストール</strong></li>
+<li><strong>CUDAのインストール</strong></li>
+<li><strong>cuDNNのインストール</strong></li>
+<li><strong>Caffeのインストール</strong></li>
+</ol>
+<p>※以上の手順は<a href="https://github.com/BVLC/caffe/wiki/Ubuntu-16.04-or-15.10-Installation-Guide">Caffeの公式サイト</a>を参考にしました．不明な点があれば公式サイトを参照してください．</p>
+<h3>１．OpenCVのインストール</h3>
+<p>Caffeを使うにはOepnCVが必要です．OpenCV2がデフォルトと書いていますが，せっかくなので最新のOpenCV3.1を入れましょう．<br>
+デフォルトはOpenCV2ですが，OpenCV3.1でも設定ファイルをほんの少し変えるだけで（後述）問題なく動作するように設計されています．</p>
+<p><a href="https://github.com/BVLC/caffe/wiki/Ubuntu-16.04-or-15.10-OpenCV-3.1-Installation-Guide">Caffeの公式サイトにOpenCVのインストール手順が書いてあります</a>ので，それを参考にしました．</p>
+<p>まずは関連する諸々のソフトをダウンロードします．</p><!-- Crayon Syntax Highlighter v_2.7.2_beta -->
+
+		<div id="crayon-5c9236fc9e1b0777882677" class="crayon-syntax crayon-theme-classic crayon-font-monaco crayon-os-pc print-yes notranslate" data-settings=" minimize scroll-mouseover" style=" margin-top: 12px; margin-bottom: 12px; font-size: 12px !important; line-height: 15px !important;">
+		
+			<div class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly="" style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 12px !important; line-height: 15px !important;">sudo apt-get install build-essential cmake git
+sudo apt-get install ffmpeg libopencv-dev libgtk-3-dev python-numpy python3-numpy libdc1394-22 libdc1394-22-dev libjpeg-dev libpng12-dev libtiff5-dev libjasper-dev libavcodec-dev libavformat-dev libswscale-dev libxine2-dev libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev libv4l-dev libtbb-dev qtbase5-dev libfaac-dev libmp3lame-dev libopencore-amrnb-dev libopencore-amrwb-dev libtheora-dev libvorbis-dev libxvidcore-dev x264 v4l-utils unzip</textarea></div>
+			<div class="crayon-main" style="">
+				<table class="crayon-table">
+					<tbody><tr class="crayon-row">
+				<td class="crayon-nums " data-settings="hide">
+					<div class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-num" data-line="crayon-5c9236fc9e1b0777882677-1">1</div><div class="crayon-num" data-line="crayon-5c9236fc9e1b0777882677-2">2</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important; -moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4;"><div class="crayon-line" id="crayon-5c9236fc9e1b0777882677-1"><span class="crayon-e">sudo </span><span class="crayon-v">apt</span><span class="crayon-o">-</span><span class="crayon-e">get </span><span class="crayon-e">install </span><span class="crayon-v">build</span><span class="crayon-o">-</span><span class="crayon-e">essential </span><span class="crayon-e">cmake </span><span class="crayon-e">git</span></div><div class="crayon-line" id="crayon-5c9236fc9e1b0777882677-2"><span class="crayon-e">sudo </span><span class="crayon-v">apt</span><span class="crayon-o">-</span><span class="crayon-e">get </span><span class="crayon-e">install </span><span class="crayon-e">ffmpeg </span><span class="crayon-v">libopencv</span><span class="crayon-o">-</span><span class="crayon-e">dev </span><span class="crayon-v">libgtk</span><span class="crayon-o">-</span><span class="crayon-cn">3</span><span class="crayon-o">-</span><span class="crayon-e">dev </span><span class="crayon-v">python</span><span class="crayon-o">-</span><span class="crayon-e">numpy </span><span class="crayon-v">python3</span><span class="crayon-o">-</span><span class="crayon-e">numpy </span><span class="crayon-v">libdc1394</span><span class="crayon-o">-</span><span class="crayon-cn">22</span><span class="crayon-h"> </span><span class="crayon-v">libdc1394</span><span class="crayon-o">-</span><span class="crayon-cn">22</span><span class="crayon-o">-</span><span class="crayon-e">dev </span><span class="crayon-v">libjpeg</span><span class="crayon-o">-</span><span class="crayon-e">dev </span><span class="crayon-v">libpng12</span><span class="crayon-o">-</span><span class="crayon-e">dev </span><span class="crayon-v">libtiff5</span><span class="crayon-o">-</span><span class="crayon-e">dev </span><span class="crayon-v">libjasper</span><span class="crayon-o">-</span><span class="crayon-e">dev </span><span class="crayon-v">libavcodec</span><span class="crayon-o">-</span><span class="crayon-e">dev </span><span class="crayon-v">libavformat</span><span class="crayon-o">-</span><span class="crayon-e">dev </span><span class="crayon-v">libswscale</span><span class="crayon-o">-</span><span class="crayon-e">dev </span><span class="crayon-v">libxine2</span><span class="crayon-o">-</span><span class="crayon-e">dev </span><span class="crayon-v">libgstreamer1</span><span class="crayon-sy">.</span><span class="crayon-cn">0</span><span class="crayon-o">-</span><span class="crayon-e">dev </span><span class="crayon-v">libgstreamer</span><span class="crayon-o">-</span><span class="crayon-v">plugins</span><span class="crayon-o">-</span><span class="crayon-v">base1</span><span class="crayon-sy">.</span><span class="crayon-cn">0</span><span class="crayon-o">-</span><span class="crayon-e">dev </span><span class="crayon-v">libv4l</span><span class="crayon-o">-</span><span class="crayon-e">dev </span><span class="crayon-v">libtbb</span><span class="crayon-o">-</span><span class="crayon-e">dev </span><span class="crayon-v">qtbase5</span><span class="crayon-o">-</span><span class="crayon-e">dev </span><span class="crayon-v">libfaac</span><span class="crayon-o">-</span><span class="crayon-e">dev </span><span class="crayon-v">libmp3lame</span><span class="crayon-o">-</span><span class="crayon-e">dev </span><span class="crayon-v">libopencore</span><span class="crayon-o">-</span><span class="crayon-v">amrnb</span><span class="crayon-o">-</span><span class="crayon-e">dev </span><span class="crayon-v">libopencore</span><span class="crayon-o">-</span><span class="crayon-v">amrwb</span><span class="crayon-o">-</span><span class="crayon-e">dev </span><span class="crayon-v">libtheora</span><span class="crayon-o">-</span><span class="crayon-e">dev </span><span class="crayon-v">libvorbis</span><span class="crayon-o">-</span><span class="crayon-e">dev </span><span class="crayon-v">libxvidcore</span><span class="crayon-o">-</span><span class="crayon-e">dev </span><span class="crayon-e">x264 </span><span class="crayon-v">v4l</span><span class="crayon-o">-</span><span class="crayon-e">utils </span><span class="crayon-v">unzip</span></div></div></td>
+					</tr>
+				</tbody></table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0025 seconds] -->
+<p>次に公式サイトからOpenCV 3.1をダウンロードします．</p>
+<p><strong>OpenCV Download</strong><br>
+<a href="http://opencv.org/downloads.html">http://opencv.org/downloads.html</a></p>
+<p>ダウンロードしたらunzipで解凍してください．その後，解凍したディレクトリに移動して，以下のようにcmakeでビルドを行っていきます．</p><!-- Crayon Syntax Highlighter v_2.7.2_beta -->
+
+		<div id="crayon-5c9236fc9e1be832522021" class="crayon-syntax crayon-theme-classic crayon-font-monaco crayon-os-pc print-yes notranslate" data-settings=" minimize scroll-mouseover" style=" margin-top: 12px; margin-bottom: 12px; font-size: 12px !important; line-height: 15px !important;">
+		
+			<div class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly="" style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 12px !important; line-height: 15px !important;">mkdir build
+cd build/
+cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local -D WITH_TBB=ON -D WITH_V4L=ON -D WITH_QT=ON -D WITH_OPENGL=ON ..
+make</textarea></div>
+			<div class="crayon-main" style="">
+				<table class="crayon-table">
+					<tbody><tr class="crayon-row">
+				<td class="crayon-nums " data-settings="hide">
+					<div class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-num" data-line="crayon-5c9236fc9e1be832522021-1">1</div><div class="crayon-num" data-line="crayon-5c9236fc9e1be832522021-2">2</div><div class="crayon-num" data-line="crayon-5c9236fc9e1be832522021-3">3</div><div class="crayon-num" data-line="crayon-5c9236fc9e1be832522021-4">4</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important; -moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4;"><div class="crayon-line" id="crayon-5c9236fc9e1be832522021-1"><span class="crayon-e">mkdir </span><span class="crayon-e">build</span></div><div class="crayon-line" id="crayon-5c9236fc9e1be832522021-2"><span class="crayon-e">cd </span><span class="crayon-v">build</span><span class="crayon-o">/</span></div><div class="crayon-line" id="crayon-5c9236fc9e1be832522021-3"><span class="crayon-v">cmake</span><span class="crayon-h"> </span><span class="crayon-o">-</span><span class="crayon-i">D</span><span class="crayon-h"> </span><span class="crayon-v">CMAKE_BUILD_TYPE</span><span class="crayon-o">=</span><span class="crayon-v">RELEASE</span><span class="crayon-h"> </span><span class="crayon-o">-</span><span class="crayon-i">D</span><span class="crayon-h"> </span><span class="crayon-v">CMAKE_INSTALL_PREFIX</span><span class="crayon-o">=</span><span class="crayon-o">/</span><span class="crayon-v">usr</span><span class="crayon-o">/</span><span class="crayon-v">local</span><span class="crayon-h"> </span><span class="crayon-o">-</span><span class="crayon-i">D</span><span class="crayon-h"> </span><span class="crayon-v">WITH_TBB</span><span class="crayon-o">=</span><span class="crayon-v">ON</span><span class="crayon-h"> </span><span class="crayon-o">-</span><span class="crayon-i">D</span><span class="crayon-h"> </span><span class="crayon-v">WITH_V4L</span><span class="crayon-o">=</span><span class="crayon-v">ON</span><span class="crayon-h"> </span><span class="crayon-o">-</span><span class="crayon-i">D</span><span class="crayon-h"> </span><span class="crayon-v">WITH_QT</span><span class="crayon-o">=</span><span class="crayon-v">ON</span><span class="crayon-h"> </span><span class="crayon-o">-</span><span class="crayon-i">D</span><span class="crayon-h"> </span><span class="crayon-v">WITH_OPENGL</span><span class="crayon-o">=</span><span class="crayon-i">ON</span><span class="crayon-h"> </span><span class="crayon-sy">.</span><span class="crayon-sy">.</span></div><div class="crayon-line" id="crayon-5c9236fc9e1be832522021-4"><span class="crayon-v">make</span></div></div></td>
+					</tr>
+				</tbody></table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0004 seconds] -->
+<p>次に，makeを使ってインストールを行います．</p><!-- Crayon Syntax Highlighter v_2.7.2_beta -->
+
+		<div id="crayon-5c9236fc9e1c2744237459" class="crayon-syntax crayon-theme-classic crayon-font-monaco crayon-os-pc print-yes notranslate" data-settings=" minimize scroll-mouseover" style=" margin-top: 12px; margin-bottom: 12px; font-size: 12px !important; line-height: 15px !important;">
+		
+			<div class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly="" style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 12px !important; line-height: 15px !important;">sudo make install
+sudo /bin/bash -c 'echo "/usr/local/lib" &gt; /etc/ld.so.conf.d/opencv.conf'
+sudo ldconfig
+sudo apt-get update</textarea></div>
+			<div class="crayon-main" style="">
+				<table class="crayon-table">
+					<tbody><tr class="crayon-row">
+				<td class="crayon-nums " data-settings="hide">
+					<div class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-num" data-line="crayon-5c9236fc9e1c2744237459-1">1</div><div class="crayon-num" data-line="crayon-5c9236fc9e1c2744237459-2">2</div><div class="crayon-num" data-line="crayon-5c9236fc9e1c2744237459-3">3</div><div class="crayon-num" data-line="crayon-5c9236fc9e1c2744237459-4">4</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important; -moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4;"><div class="crayon-line" id="crayon-5c9236fc9e1c2744237459-1"><span class="crayon-e">sudo </span><span class="crayon-e">make </span><span class="crayon-e">install</span></div><div class="crayon-line" id="crayon-5c9236fc9e1c2744237459-2"><span class="crayon-v">sudo</span><span class="crayon-h"> </span><span class="crayon-o">/</span><span class="crayon-v">bin</span><span class="crayon-o">/</span><span class="crayon-v">bash</span><span class="crayon-h"> </span><span class="crayon-o">-</span><span class="crayon-i">c</span><span class="crayon-h"> </span><span class="crayon-s">'echo "/usr/local/lib" &gt; /etc/ld.so.conf.d/opencv.conf'</span></div><div class="crayon-line" id="crayon-5c9236fc9e1c2744237459-3"><span class="crayon-e">sudo </span><span class="crayon-e">ldconfig</span></div><div class="crayon-line" id="crayon-5c9236fc9e1c2744237459-4"><span class="crayon-e">sudo </span><span class="crayon-v">apt</span><span class="crayon-o">-</span><span class="crayon-e">get </span><span class="crayon-v">update</span></div></div></td>
+					</tr>
+				</tbody></table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0004 seconds] -->
+<p>念のため再起動して下さい．ターミナルで’pkg-config –cflags opencv’, ‘pkg-config –libs opencv’と入力して，きちんと参照できていればインストール成功です．</p>
+<h3>２．GPUドライバのインストール</h3>
+<p>まずはGPUドライバのインストールを行います．</p>
+<p>デスクトップ画面右上の「設定（歯車マーク）」→「システム設定」→「詳細」を開きます．</p>
+<p>ここで「グラフィック」の欄に正しい型番が表示されていれば何もしなくてOKです．</p>
+<p>私の場合は表示されていなかったのでインストールを行います．</p>
+<p>インストールと言っても簡単なもので，</p>
+<p><strong>「システム設定」→「ソフトウェアとアップデート」→「追加のドライバー」</strong></p>
+<p>で所望のドライバを選択し，変更の適用をクリックするだけです．</p>
+<p>もし「追加のドライバー」で表示されなければ，<a href="http://www.nvidia.co.jp/Download/index.aspx?lang=jp">公式サイト</a>からドライバをダウンロードして，手動インストールしてください．</p>
+<h3>３．CUDAのインストール</h3>
+<p>次にCUDAをインストールします．CUDAやcuDNNを使用することで学習のスピードが向上するそうです．</p>
+<p>Caffe公式サイトによるとGCC5（UbuntuのデフォルトGCCコンパイラはGCC5）とCUDA7.5ではMakeプロセスが失敗するとのことなので，<strong>CUDA8.0RC</strong>をインストールします．</p>
+<p>GCC4を使う方法もあるそうですが，ここは公式サイトに従います．</p>
+<p>まずは以下のURLからインストーラをダウンロードします．（無料ですが簡単な登録が必要です．）</p>
+<p><strong>Cuda Toolkit 8.0 Release Candidate Downloads</strong><br>
+<a href="https://developer.nvidia.com/cuda-release-candidate-download">https://developer.nvidia.com/cuda-release-candidate-download</a></p>
+<p>登録が完了するとOSなどを指定する画面が表示されますので，以下のように選択します．</p>
+<p><img class="alignnone size-full wp-image-13" src="./[11]-Ubuntu 16.04 with CUDA にCaffeをインストール _ ロボット研究者の戯言_files/cuda8rc-1.png" alt="cuda8rc" width="820" height="337" srcset="https://robotics4society.com/wp-content/uploads/2016/06/cuda8rc-1.png 820w, https://robotics4society.com/wp-content/uploads/2016/06/cuda8rc-1-300x123.png 300w, https://robotics4society.com/wp-content/uploads/2016/06/cuda8rc-1-768x316.png 768w" sizes="(max-width: 820px) 100vw, 820px"></p>
+<p>ここでポイントがあります．<span style="color: #ff0000;"><strong>インストーラのタイプは”deb”を選択してください．</strong></span></p>
+<p><span style="color: #000000;">あるサイトを参考にしてrunファイルでやっていたのですが，Nouveauを無効にしたりするので面倒なのと，インストール終了後にリブートをすると正常に起動しなくなり，Ubuntu自体を再インストールする羽目になりました．．．</span></p>
+<p>debを使うとエラーもなくスムーズに進んだのでdebを使うことをおすすめします．</p>
+<p>ダウンロードが完了したら，ターミナルで以下のように入力してインストールは完了です．</p><!-- Crayon Syntax Highlighter v_2.7.2_beta -->
+
+		<div id="crayon-5c9236fc9e1c4120842004" class="crayon-syntax crayon-theme-classic crayon-font-monaco crayon-os-pc print-yes notranslate" data-settings=" minimize scroll-mouseover" style=" margin-top: 12px; margin-bottom: 12px; font-size: 12px !important; line-height: 15px !important;">
+		
+			<div class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly="" style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 12px !important; line-height: 15px !important;">sudo dpkg -i ダウンロードしたファイル名.deb
+sudo apt-get update
+sudo apt-get install cuda</textarea></div>
+			<div class="crayon-main" style="">
+				<table class="crayon-table">
+					<tbody><tr class="crayon-row">
+				<td class="crayon-nums " data-settings="hide">
+					<div class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-num" data-line="crayon-5c9236fc9e1c4120842004-1">1</div><div class="crayon-num" data-line="crayon-5c9236fc9e1c4120842004-2">2</div><div class="crayon-num" data-line="crayon-5c9236fc9e1c4120842004-3">3</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important; -moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4;"><div class="crayon-line" id="crayon-5c9236fc9e1c4120842004-1"><span class="crayon-e">sudo </span><span class="crayon-v">dpkg</span><span class="crayon-h"> </span><span class="crayon-o">-</span><span class="crayon-i">i</span><span class="crayon-h"> </span>ダウンロードしたファイル名<span class="crayon-sy">.</span><span class="crayon-e">deb</span></div><div class="crayon-line" id="crayon-5c9236fc9e1c4120842004-2"><span class="crayon-e">sudo </span><span class="crayon-v">apt</span><span class="crayon-o">-</span><span class="crayon-e">get </span><span class="crayon-e">update</span></div><div class="crayon-line" id="crayon-5c9236fc9e1c4120842004-3"><span class="crayon-e">sudo </span><span class="crayon-v">apt</span><span class="crayon-o">-</span><span class="crayon-e">get </span><span class="crayon-e">install </span><span class="crayon-v">cuda</span></div></div></td>
+					</tr>
+				</tbody></table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0002 seconds] -->
+<p></p>
+<h3>４．cuDNNのインストール</h3>
+<p>以下の公式サイトからダウンロードします．</p>
+<p><strong>cuDNN Download</strong><br>
+<a href="https://developer.nvidia.com/cudnn">https://developer.nvidia.com/cudnn</a></p>
+<p>CUDAをダウンロードするときに登録したアカウントでログインし，規約に同意するとバージョンを選択する画面が表示されます．</p>
+<p>ここではCUDAのバージョンに合わせて「cuDNN v5 for CUDA 8.0 RC」を選択します．</p><div class="google-auto-placed ap_container" style="text-align: center; width: 100%; height: auto; clear: none;"><ins data-ad-format="auto" class="adsbygoogle adsbygoogle-noablate" data-ad-client="ca-pub-7021391156101005" data-adsbygoogle-status="done" style="display: block; margin: auto; background-color: transparent;"><ins id="aswift_3_expand" style="display:inline-table;border:none;height:145px;margin:0;padding:0;position:relative;visibility:visible;width:580px;background-color:transparent;"><ins id="aswift_3_anchor" style="display:block;border:none;height:145px;margin:0;padding:0;position:relative;visibility:visible;width:580px;background-color:transparent;"><iframe width="580" height="145" frameborder="0" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" onload="var i=this.id,s=window.google_iframe_oncopy,H=s&amp;&amp;s.handlers,h=H&amp;&amp;H[i],w=this.contentWindow,d;try{d=w.document}catch(e){}if(h&amp;&amp;d&amp;&amp;(!d.body||!d.body.firstChild)){if(h.call){setTimeout(h,0)}else if(h.match){try{h=s.upd(h,i)}catch(e){}w.location.replace(h)}}" id="aswift_3" name="aswift_3" style="left:0;position:absolute;top:0;border:0px;width:580px;height:145px;" src="./[11]-Ubuntu 16.04 with CUDA にCaffeをインストール _ ロボット研究者の戯言_files/saved_resource(6).html"></iframe></ins></ins></ins></div>
+<p>ダウンロードしたら以下のように解凍してファイルを所定のディレクトリにコピーするだけでインストール完了です．</p><!-- Crayon Syntax Highlighter v_2.7.2_beta -->
+
+		<div id="crayon-5c9236fc9e1d0672393083" class="crayon-syntax crayon-theme-classic crayon-font-monaco crayon-os-pc print-yes notranslate" data-settings=" minimize scroll-mouseover" style=" margin-top: 12px; margin-bottom: 12px; font-size: 12px !important; line-height: 15px !important;">
+		
+			<div class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly="" style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 12px !important; line-height: 15px !important;">tar -zxf cudnn-6.5-linux-x64-v2.tgz
+sudo cp lib64/libcudnn* /usr/local/cuda/lib64/
+sudo cp include/cudnn.h /usr/local/cuda/include</textarea></div>
+			<div class="crayon-main" style="">
+				<table class="crayon-table">
+					<tbody><tr class="crayon-row">
+				<td class="crayon-nums " data-settings="hide">
+					<div class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-num" data-line="crayon-5c9236fc9e1d0672393083-1">1</div><div class="crayon-num" data-line="crayon-5c9236fc9e1d0672393083-2">2</div><div class="crayon-num" data-line="crayon-5c9236fc9e1d0672393083-3">3</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important; -moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4;"><div class="crayon-line" id="crayon-5c9236fc9e1d0672393083-1"><span class="crayon-v">tar</span><span class="crayon-h"> </span><span class="crayon-o">-</span><span class="crayon-e">zxf </span><span class="crayon-v">cudnn</span><span class="crayon-o">-</span><span class="crayon-cn">6.5</span><span class="crayon-o">-</span><span class="crayon-v">linux</span><span class="crayon-o">-</span><span class="crayon-v">x64</span><span class="crayon-o">-</span><span class="crayon-v">v2</span><span class="crayon-sy">.</span><span class="crayon-e">tgz</span></div><div class="crayon-line" id="crayon-5c9236fc9e1d0672393083-2"><span class="crayon-e">sudo </span><span class="crayon-e">cp </span><span class="crayon-v">lib64</span><span class="crayon-o">/</span><span class="crayon-e ">libcudnn*</span><span class="crayon-h"> </span><span class="crayon-o">/</span><span class="crayon-v">usr</span><span class="crayon-o">/</span><span class="crayon-v">local</span><span class="crayon-o">/</span><span class="crayon-v">cuda</span><span class="crayon-o">/</span><span class="crayon-v">lib64</span><span class="crayon-o">/</span></div><div class="crayon-line" id="crayon-5c9236fc9e1d0672393083-3"><span class="crayon-e">sudo </span><span class="crayon-e">cp </span><span class="crayon-v">include</span><span class="crayon-o">/</span><span class="crayon-v">cudnn</span><span class="crayon-sy">.</span><span class="crayon-v">h</span><span class="crayon-h"> </span><span class="crayon-o">/</span><span class="crayon-v">usr</span><span class="crayon-o">/</span><span class="crayon-v">local</span><span class="crayon-o">/</span><span class="crayon-v">cuda</span><span class="crayon-o">/</span><span class="crayon-v">include</span></div></div></td>
+					</tr>
+				</tbody></table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0003 seconds] -->
+<p></p>
+<h3>５．Caffeのインストール</h3>
+<p>いよいよCaffeをインストールします．</p>
+<p>まずは<a href="https://github.com/BVLC/caffe/wiki/Ubuntu-16.04-or-15.10-Installation-Guide">公式サイト</a>を参考にインストールのために必要なパッケージをインストールします．</p><!-- Crayon Syntax Highlighter v_2.7.2_beta -->
+
+		<div id="crayon-5c9236fc9e1d5979053896" class="crayon-syntax crayon-theme-classic crayon-font-monaco crayon-os-pc print-yes notranslate" data-settings=" minimize scroll-mouseover" style=" margin-top: 12px; margin-bottom: 12px; font-size: 12px !important; line-height: 15px !important;">
+		
+			<div class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly="" style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 12px !important; line-height: 15px !important;">sudo apt-get update
+sudo apt-get upgrade
+sudo apt-get install -y build-essential cmake git pkg-config
+sudo apt-get install -y libprotobuf-dev libleveldb-dev libsnappy-dev libhdf5-serial-dev protobuf-compiler
+sudo apt-get install -y libatlas-base-dev 
+sudo apt-get install -y --no-install-recommends libboost-all-dev
+sudo apt-get install -y libgflags-dev libgoogle-glog-dev liblmdb-dev
+sudo apt-get install -y python-pip</textarea></div>
+			<div class="crayon-main" style="">
+				<table class="crayon-table">
+					<tbody><tr class="crayon-row">
+				<td class="crayon-nums " data-settings="hide">
+					<div class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-num" data-line="crayon-5c9236fc9e1d5979053896-1">1</div><div class="crayon-num" data-line="crayon-5c9236fc9e1d5979053896-2">2</div><div class="crayon-num" data-line="crayon-5c9236fc9e1d5979053896-3">3</div><div class="crayon-num" data-line="crayon-5c9236fc9e1d5979053896-4">4</div><div class="crayon-num" data-line="crayon-5c9236fc9e1d5979053896-5">5</div><div class="crayon-num" data-line="crayon-5c9236fc9e1d5979053896-6">6</div><div class="crayon-num" data-line="crayon-5c9236fc9e1d5979053896-7">7</div><div class="crayon-num" data-line="crayon-5c9236fc9e1d5979053896-8">8</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important; -moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4;"><div class="crayon-line" id="crayon-5c9236fc9e1d5979053896-1"><span class="crayon-e">sudo </span><span class="crayon-v">apt</span><span class="crayon-o">-</span><span class="crayon-e">get </span><span class="crayon-e">update</span></div><div class="crayon-line" id="crayon-5c9236fc9e1d5979053896-2"><span class="crayon-e">sudo </span><span class="crayon-v">apt</span><span class="crayon-o">-</span><span class="crayon-e">get </span><span class="crayon-e">upgrade</span></div><div class="crayon-line" id="crayon-5c9236fc9e1d5979053896-3"><span class="crayon-e">sudo </span><span class="crayon-v">apt</span><span class="crayon-o">-</span><span class="crayon-e">get </span><span class="crayon-v">install</span><span class="crayon-h"> </span><span class="crayon-o">-</span><span class="crayon-i">y</span><span class="crayon-h"> </span><span class="crayon-v">build</span><span class="crayon-o">-</span><span class="crayon-e">essential </span><span class="crayon-e">cmake </span><span class="crayon-e">git </span><span class="crayon-v">pkg</span><span class="crayon-o">-</span><span class="crayon-e">config</span></div><div class="crayon-line" id="crayon-5c9236fc9e1d5979053896-4"><span class="crayon-e">sudo </span><span class="crayon-v">apt</span><span class="crayon-o">-</span><span class="crayon-e">get </span><span class="crayon-v">install</span><span class="crayon-h"> </span><span class="crayon-o">-</span><span class="crayon-i">y</span><span class="crayon-h"> </span><span class="crayon-v">libprotobuf</span><span class="crayon-o">-</span><span class="crayon-e">dev </span><span class="crayon-v">libleveldb</span><span class="crayon-o">-</span><span class="crayon-e">dev </span><span class="crayon-v">libsnappy</span><span class="crayon-o">-</span><span class="crayon-e">dev </span><span class="crayon-v">libhdf5</span><span class="crayon-o">-</span><span class="crayon-v">serial</span><span class="crayon-o">-</span><span class="crayon-e">dev </span><span class="crayon-v">protobuf</span><span class="crayon-o">-</span><span class="crayon-e">compiler</span></div><div class="crayon-line" id="crayon-5c9236fc9e1d5979053896-5"><span class="crayon-e">sudo </span><span class="crayon-v">apt</span><span class="crayon-o">-</span><span class="crayon-e">get </span><span class="crayon-v">install</span><span class="crayon-h"> </span><span class="crayon-o">-</span><span class="crayon-i">y</span><span class="crayon-h"> </span><span class="crayon-v">libatlas</span><span class="crayon-o">-</span><span class="crayon-v">base</span><span class="crayon-o">-</span><span class="crayon-e">dev </span></div><div class="crayon-line" id="crayon-5c9236fc9e1d5979053896-6"><span class="crayon-e">sudo </span><span class="crayon-v">apt</span><span class="crayon-o">-</span><span class="crayon-e">get </span><span class="crayon-v">install</span><span class="crayon-h"> </span><span class="crayon-o">-</span><span class="crayon-v">y</span><span class="crayon-h"> </span><span class="crayon-o">--</span><span class="crayon-v">no</span><span class="crayon-o">-</span><span class="crayon-v">install</span><span class="crayon-o">-</span><span class="crayon-e">recommends </span><span class="crayon-v">libboost</span><span class="crayon-o">-</span><span class="crayon-v">all</span><span class="crayon-o">-</span><span class="crayon-e">dev</span></div><div class="crayon-line" id="crayon-5c9236fc9e1d5979053896-7"><span class="crayon-e">sudo </span><span class="crayon-v">apt</span><span class="crayon-o">-</span><span class="crayon-e">get </span><span class="crayon-v">install</span><span class="crayon-h"> </span><span class="crayon-o">-</span><span class="crayon-i">y</span><span class="crayon-h"> </span><span class="crayon-v">libgflags</span><span class="crayon-o">-</span><span class="crayon-e">dev </span><span class="crayon-v">libgoogle</span><span class="crayon-o">-</span><span class="crayon-v">glog</span><span class="crayon-o">-</span><span class="crayon-e">dev </span><span class="crayon-v">liblmdb</span><span class="crayon-o">-</span><span class="crayon-e">dev</span></div><div class="crayon-line" id="crayon-5c9236fc9e1d5979053896-8"><span class="crayon-e">sudo </span><span class="crayon-v">apt</span><span class="crayon-o">-</span><span class="crayon-e">get </span><span class="crayon-v">install</span><span class="crayon-h"> </span><span class="crayon-o">-</span><span class="crayon-i">y</span><span class="crayon-h"> </span><span class="crayon-v">python</span><span class="crayon-o">-</span><span class="crayon-v">pip</span></div></div></td>
+					</tr>
+				</tbody></table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0009 seconds] -->
+<p>公式サイトでは最後にOpenCVをインストールしていますが，先ほど手動でOpenCV3.1をインストールしたので，これだけでＯＫです．</p>
+<p>次に，主役のCaffeのzipファイルをダウンロードします．</p>
+<p><strong>Caffeダウンロードサイト</strong><br>
+<a href="https://github.com/BVLC/caffe">https://github.com/BVLC/caffe</a></p>
+<p>Caffeを任意の場所にunzipで解凍します．解凍したあとは解凍したディレクトリに移動し，サンプルの設定ファイルをコピー，設定を行います．</p><!-- Crayon Syntax Highlighter v_2.7.2_beta -->
+
+		<div id="crayon-5c9236fc9e1d8393207216" class="crayon-syntax crayon-theme-classic crayon-font-monaco crayon-os-pc print-yes notranslate" data-settings=" minimize scroll-mouseover" style=" margin-top: 12px; margin-bottom: 12px; font-size: 12px !important; line-height: 15px !important;">
+		
+			<div class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly="" style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 12px !important; line-height: 15px !important;">cp Makefile.config.example Makefile.config</textarea></div>
+			<div class="crayon-main" style="">
+				<table class="crayon-table">
+					<tbody><tr class="crayon-row">
+				<td class="crayon-nums " data-settings="hide">
+					<div class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-num" data-line="crayon-5c9236fc9e1d8393207216-1">1</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important; -moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4;"><div class="crayon-line" id="crayon-5c9236fc9e1d8393207216-1"><span class="crayon-e">cp </span><span class="crayon-v">Makefile</span><span class="crayon-sy">.</span><span class="crayon-v">config</span><span class="crayon-sy">.</span><span class="crayon-e">example </span><span class="crayon-v">Makefile</span><span class="crayon-sy">.</span><span class="crayon-v">config</span></div></div></td>
+					</tr>
+				</tbody></table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0001 seconds] -->
+<p>コピーしたMakefile.configを編集して設定を行うわけですが，以下のように変更します．</p>
+<p><span style="color: #999999;">OPENCV_VERSION := 3　（コメントを外す）</span></p>
+<p><span style="color: #999999;">PYTHON_INCLUDE := /usr/include/python2.7 /usr/lib/python2.7/dist-packages/numpy/core/include　（パスの追加）</span></p>
+<p><span style="color: #999999;">WITH_PYTHON_LAYER := 1　（コメントを外す）</span></p>
+<p><span style="color: #999999;">INCLUDE_DIRS := $(PYTHON_INCLUDE) /usr/local/include /usr/include/hdf5/serial　（パスの追加）</span></p>
+<p><span style="color: #999999;">LIBRARY_DIRS := $(PYTHON_LIB) /usr/local/lib /usr/lib /usr/lib/x86_64-linux-gnu /usr/lib/x86_64-linux-gnu/hdf5/serial　（パスの追加）</span></p>
+<p>これで設定ファイルの編集は終了です．</p>
+<p>さらにインストール時のエラーを解消するために以下のようなコマンドを入力します．</p><!-- Crayon Syntax Highlighter v_2.7.2_beta -->
+
+		<div id="crayon-5c9236fc9e1db937041700" class="crayon-syntax crayon-theme-classic crayon-font-monaco crayon-os-pc print-yes notranslate" data-settings=" minimize scroll-mouseover" style=" margin-top: 12px; margin-bottom: 12px; font-size: 12px !important; line-height: 15px !important;">
+		
+			<div class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly="" style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 12px !important; line-height: 15px !important;">find . -type f -exec sed -i -e 's^"hdf5.h"^"hdf5/serial/hdf5.h"^g' -e 's^"hdf5_hl.h"^"hdf5/serial/hdf5_hl.h"^g' '{}' \;
+cd /usr/lib/x86_64-linux-gnu
+sudo ln -s libhdf5_serial.so.8.0.2 libhdf5.so
+sudo ln -s libhdf5_serial_hl.so.8.0.2 libhdf5_hl.so</textarea></div>
+			<div class="crayon-main" style="">
+				<table class="crayon-table">
+					<tbody><tr class="crayon-row">
+				<td class="crayon-nums " data-settings="hide">
+					<div class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-num" data-line="crayon-5c9236fc9e1db937041700-1">1</div><div class="crayon-num" data-line="crayon-5c9236fc9e1db937041700-2">2</div><div class="crayon-num" data-line="crayon-5c9236fc9e1db937041700-3">3</div><div class="crayon-num" data-line="crayon-5c9236fc9e1db937041700-4">4</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important; -moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4;"><div class="crayon-line" id="crayon-5c9236fc9e1db937041700-1"><span class="crayon-i">find</span><span class="crayon-h"> </span><span class="crayon-sy">.</span><span class="crayon-h"> </span><span class="crayon-o">-</span><span class="crayon-i">type</span><span class="crayon-h"> </span><span class="crayon-v">f</span><span class="crayon-h"> </span><span class="crayon-o">-</span><span class="crayon-e">exec </span><span class="crayon-v">sed</span><span class="crayon-h"> </span><span class="crayon-o">-</span><span class="crayon-v">i</span><span class="crayon-h"> </span><span class="crayon-o">-</span><span class="crayon-i">e</span><span class="crayon-h"> </span><span class="crayon-s">'s^"hdf5.h"^"hdf5/serial/hdf5.h"^g'</span><span class="crayon-h"> </span><span class="crayon-o">-</span><span class="crayon-i">e</span><span class="crayon-h"> </span><span class="crayon-s">'s^"hdf5_hl.h"^"hdf5/serial/hdf5_hl.h"^g'</span><span class="crayon-h"> </span><span class="crayon-s">'{}'</span><span class="crayon-h"> </span><span class="crayon-sy">\</span><span class="crayon-sy">;</span></div><div class="crayon-line" id="crayon-5c9236fc9e1db937041700-2"><span class="crayon-v">cd</span><span class="crayon-h"> </span><span class="crayon-o">/</span><span class="crayon-v">usr</span><span class="crayon-o">/</span><span class="crayon-v">lib</span><span class="crayon-o">/</span><span class="crayon-v">x86_64</span><span class="crayon-o">-</span><span class="crayon-v">linux</span><span class="crayon-o">-</span><span class="crayon-e">gnu</span></div><div class="crayon-line" id="crayon-5c9236fc9e1db937041700-3"><span class="crayon-e">sudo </span><span class="crayon-v">ln</span><span class="crayon-h"> </span><span class="crayon-o">-</span><span class="crayon-i">s</span><span class="crayon-h"> </span><span class="crayon-v">libhdf5_serial</span><span class="crayon-sy">.</span><span class="crayon-v">so</span><span class="crayon-sy">.</span><span class="crayon-cn">8.0.2</span><span class="crayon-h"> </span><span class="crayon-v">libhdf5</span><span class="crayon-sy">.</span><span class="crayon-e">so</span></div><div class="crayon-line" id="crayon-5c9236fc9e1db937041700-4"><span class="crayon-e">sudo </span><span class="crayon-v">ln</span><span class="crayon-h"> </span><span class="crayon-o">-</span><span class="crayon-i">s</span><span class="crayon-h"> </span><span class="crayon-v">libhdf5_serial_hl</span><span class="crayon-sy">.</span><span class="crayon-v">so</span><span class="crayon-sy">.</span><span class="crayon-cn">8.0.2</span><span class="crayon-h"> </span><span class="crayon-v">libhdf5_hl</span><span class="crayon-sy">.</span><span class="crayon-v">so</span></div></div></td>
+					</tr>
+				</tbody></table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0010 seconds] -->
+<p>ここまで問題なく出来たら，caffeのディレクトリに移動してください．その後，以下のように入力します．</p><div class="google-auto-placed ap_container" style="text-align: center; width: 100%; height: auto; clear: none;"><ins data-ad-format="auto" class="adsbygoogle adsbygoogle-noablate" data-ad-client="ca-pub-7021391156101005" data-adsbygoogle-status="done" style="display: block; margin: auto; background-color: transparent;"><ins id="aswift_4_expand" style="display:inline-table;border:none;height:145px;margin:0;padding:0;position:relative;visibility:visible;width:580px;background-color:transparent;"><ins id="aswift_4_anchor" style="display:block;border:none;height:145px;margin:0;padding:0;position:relative;visibility:visible;width:580px;background-color:transparent;"><iframe width="580" height="145" frameborder="0" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" onload="var i=this.id,s=window.google_iframe_oncopy,H=s&amp;&amp;s.handlers,h=H&amp;&amp;H[i],w=this.contentWindow,d;try{d=w.document}catch(e){}if(h&amp;&amp;d&amp;&amp;(!d.body||!d.body.firstChild)){if(h.call){setTimeout(h,0)}else if(h.match){try{h=s.upd(h,i)}catch(e){}w.location.replace(h)}}" id="aswift_4" name="aswift_4" style="left:0;position:absolute;top:0;border:0px;width:580px;height:145px;" src="./[11]-Ubuntu 16.04 with CUDA にCaffeをインストール _ ロボット研究者の戯言_files/saved_resource(7).html"></iframe></ins></ins></ins></div><!-- Crayon Syntax Highlighter v_2.7.2_beta -->
+
+		<div id="crayon-5c9236fc9e1dd199234229" class="crayon-syntax crayon-theme-classic crayon-font-monaco crayon-os-pc print-yes notranslate" data-settings=" minimize scroll-mouseover" style=" margin-top: 12px; margin-bottom: 12px; font-size: 12px !important; line-height: 15px !important;">
+		
+			<div class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly="" style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 12px !important; line-height: 15px !important;">cd python
+for req in $(cat requirements.txt); do pip install $req; done</textarea></div>
+			<div class="crayon-main" style="">
+				<table class="crayon-table">
+					<tbody><tr class="crayon-row">
+				<td class="crayon-nums " data-settings="hide">
+					<div class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-num" data-line="crayon-5c9236fc9e1dd199234229-1">1</div><div class="crayon-num" data-line="crayon-5c9236fc9e1dd199234229-2">2</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important; -moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4;"><div class="crayon-line" id="crayon-5c9236fc9e1dd199234229-1"><span class="crayon-e">cd </span><span class="crayon-e">python</span></div><div class="crayon-line" id="crayon-5c9236fc9e1dd199234229-2"><span class="crayon-st">for</span><span class="crayon-h"> </span><span class="crayon-e">req </span><span class="crayon-st">in</span><span class="crayon-h"> </span><span class="crayon-sy">$</span><span class="crayon-sy">(</span><span class="crayon-e">cat </span><span class="crayon-v">requirements</span><span class="crayon-sy">.</span><span class="crayon-v">txt</span><span class="crayon-sy">)</span><span class="crayon-sy">;</span><span class="crayon-h"> </span><span class="crayon-st">do</span><span class="crayon-h"> </span><span class="crayon-e">pip </span><span class="crayon-i">install</span><span class="crayon-h"> </span><span class="crayon-sy">$</span><span class="crayon-v">req</span><span class="crayon-sy">;</span><span class="crayon-h"> </span><span class="crayon-v">done</span></div></div></td>
+					</tr>
+				</tbody></table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0002 seconds] -->
+<p>ここまで来たらインストールの準備が完了です！</p>
+<p>以下のコマンドでインストールを行いましょう．</p><!-- Crayon Syntax Highlighter v_2.7.2_beta -->
+
+		<div id="crayon-5c9236fc9e1df826296448" class="crayon-syntax crayon-theme-classic crayon-font-monaco crayon-os-pc print-yes notranslate" data-settings=" minimize scroll-mouseover" style=" margin-top: 12px; margin-bottom: 12px; font-size: 12px !important; line-height: 15px !important;">
+		
+			<div class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly="" style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 12px !important; line-height: 15px !important;">cd ..
+(now you are in caffe-master directory)
+make all
+make test
+make runtest
+make pycaffe      -should be finished already, so you can omit this one
+make distribute</textarea></div>
+			<div class="crayon-main" style="">
+				<table class="crayon-table">
+					<tbody><tr class="crayon-row">
+				<td class="crayon-nums " data-settings="hide">
+					<div class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-num" data-line="crayon-5c9236fc9e1df826296448-1">1</div><div class="crayon-num" data-line="crayon-5c9236fc9e1df826296448-2">2</div><div class="crayon-num" data-line="crayon-5c9236fc9e1df826296448-3">3</div><div class="crayon-num" data-line="crayon-5c9236fc9e1df826296448-4">4</div><div class="crayon-num" data-line="crayon-5c9236fc9e1df826296448-5">5</div><div class="crayon-num" data-line="crayon-5c9236fc9e1df826296448-6">6</div><div class="crayon-num" data-line="crayon-5c9236fc9e1df826296448-7">7</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important; -moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4;"><div class="crayon-line" id="crayon-5c9236fc9e1df826296448-1"><span class="crayon-i">cd</span><span class="crayon-h"> </span><span class="crayon-sy">.</span><span class="crayon-sy">.</span></div><div class="crayon-line" id="crayon-5c9236fc9e1df826296448-2"><span class="crayon-sy">(</span><span class="crayon-e">now </span><span class="crayon-e">you </span><span class="crayon-e">are </span><span class="crayon-st">in</span><span class="crayon-h"> </span><span class="crayon-v">caffe</span><span class="crayon-o">-</span><span class="crayon-e">master </span><span class="crayon-v">directory</span><span class="crayon-sy">)</span></div><div class="crayon-line" id="crayon-5c9236fc9e1df826296448-3"><span class="crayon-e">make </span><span class="crayon-e">all</span></div><div class="crayon-line" id="crayon-5c9236fc9e1df826296448-4"><span class="crayon-e">make </span><span class="crayon-e">test</span></div><div class="crayon-line" id="crayon-5c9236fc9e1df826296448-5"><span class="crayon-e">make </span><span class="crayon-e">runtest</span></div><div class="crayon-line" id="crayon-5c9236fc9e1df826296448-6"><span class="crayon-e">make </span><span class="crayon-v">pycaffe</span><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-o">-</span><span class="crayon-e">should </span><span class="crayon-e">be </span><span class="crayon-e">finished </span><span class="crayon-v">already</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-e">so </span><span class="crayon-e">you </span><span class="crayon-e">can </span><span class="crayon-e">omit </span><span class="crayon-r">this</span><span class="crayon-h"> </span><span class="crayon-e">one</span></div><div class="crayon-line" id="crayon-5c9236fc9e1df826296448-7"><span class="crayon-e">make </span><span class="crayon-v">distribute</span></div></div></td>
+					</tr>
+				</tbody></table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0003 seconds] -->
+<p>エラーが起きなければ無事完了です．</p>
+<p>もしエラーが起きてしまった場合は公式サイトを参照してください．</p>
+<p><strong>Caffe公式サイト</strong><br>
+<a href="https://github.com/BVLC/caffe/wiki/Ubuntu-16.04-or-15.10-Installation-Guide">https://github.com/BVLC/caffe/wiki/Ubuntu-16.04-or-15.10-Installation-Guide</a></p>
+                    <p class="tagst"><i class="fa fa-tags"></i>&nbsp;-
+            <a href="https://robotics4society.com/category/%e6%a9%9f%e6%a2%b0%e5%ad%a6%e7%bf%92/caffe/" rel="category tag">Caffe</a>, <a href="https://robotics4society.com/category/ubuntu/" rel="category tag">Ubuntu</a>, <a href="https://robotics4society.com/category/%e6%a9%9f%e6%a2%b0%e5%ad%a6%e7%bf%92/" rel="category tag">機械学習</a>            <a href="https://robotics4society.com/tag/16-04/" rel="tag">16.04</a>, <a href="https://robotics4society.com/tag/caffe/" rel="tag">caffe</a>, <a href="https://robotics4society.com/tag/ubuntu/" rel="tag">ubuntu</a>, <a href="https://robotics4society.com/tag/%e3%82%a4%e3%83%b3%e3%82%b9%e3%83%88%e3%83%bc%e3%83%ab/" rel="tag">インストール</a>, <a href="https://robotics4society.com/tag/%e3%83%87%e3%82%a3%e3%83%bc%e3%83%97%e3%83%a9%e3%83%bc%e3%83%8b%e3%83%b3%e3%82%b0/" rel="tag">ディープラーニング</a>, <a href="https://robotics4society.com/tag/%e3%83%97%e3%83%ad%e3%82%b0%e3%83%a9%e3%83%9f%e3%83%b3%e3%82%b0/" rel="tag">プログラミング</a>, <a href="https://robotics4society.com/tag/%e6%a9%9f%e6%a2%b0%e5%ad%a6%e7%bf%92/" rel="tag">機械学習</a>, <a href="https://robotics4society.com/tag/%e6%b7%b1%e5%b1%a4%e5%ad%a6%e7%bf%92/" rel="tag">深層学習</a>          </p>
+          <aside>
+            <div style="padding:20px 0px;">
+                                          <div class="smanone" style="padding-top:10px;">
+                              </div>
+                          </div>
+            <div class="sns">
+    <ul class="snsb clearfix">
+      <li> <iframe id="twitter-widget-0" scrolling="no" frameborder="0" allowtransparency="true" class="twitter-share-button twitter-share-button-rendered twitter-tweet-button" style="position: static; visibility: visible; width: 75px; height: 20px;" title="Twitter Tweet Button" src="./[11]-Ubuntu 16.04 with CUDA にCaffeをインストール _ ロボット研究者の戯言_files/tweet_button.2e9f365dae390394eb8d923cba8c5b11.ja.html" data-url="https://robotics4society.com/2016/06/15/ubuntu1604-caffe/"></iframe><script type="text/javascript" src="./[11]-Ubuntu 16.04 with CUDA にCaffeをインストール _ ロボット研究者の戯言_files/widgets.js.ダウンロード"></script> 
+      </li>
+      <li>
+        <iframe src="./[11]-Ubuntu 16.04 with CUDA にCaffeをインストール _ ロボット研究者の戯言_files/like.html" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:70px; height:62px;" allowtransparency="true"></iframe>
+      </li>
+      <li><script type="text/javascript" src="./[11]-Ubuntu 16.04 with CUDA にCaffeをインストール _ ロボット研究者の戯言_files/plusone.js.ダウンロード" gapi_processed="true"></script>
+        <div id="___plusone_0" style="position: absolute; width: 450px; left: -10000px;"><iframe ng-non-bindable="" frameborder="0" hspace="0" marginheight="0" marginwidth="0" scrolling="no" style="position:absolute;top:-10000px;width:450px;margin:0px;border-style:none" tabindex="0" vspace="0" width="100%" id="I0_1553151869837" name="I0_1553151869837" src="./[11]-Ubuntu 16.04 with CUDA にCaffeをインストール _ ロボット研究者の戯言_files/fastbutton.html" data-gapiattached="true"></iframe></div><g:plusone size="tall" href="https://robotics4society.com/2016/06/15/ubuntu1604-caffe/" data-gapiscan="true" data-onload="true" data-gapistub="true"></g:plusone>
+      </li>
+      <li> <a href="http://b.hatena.ne.jp/entry/https://robotics4society.com/2016/06/15/ubuntu1604-caffe/" class="hatena-bookmark-button" data-hatena-bookmark-title="Ubuntu 16.04 with CUDA にCaffeをインストール｜ロボット研究者の戯言" data-hatena-bookmark-layout="vertical" title="このエントリーをはてなブックマークに追加"><img src="./[11]-Ubuntu 16.04 with CUDA にCaffeをインストール _ ロボット研究者の戯言_files/button-only.gif" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;"></a><script type="text/javascript" src="./[11]-Ubuntu 16.04 with CUDA にCaffeをインストール _ ロボット研究者の戯言_files/bookmark_button.js.ダウンロード" charset="utf-8" async="async"></script> 
+      </li>
+    </ul>
+  </div>                        <!--ループ終了-->
+            
+            <!--<center>スポンサーリンク<br>
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-7021391156101005"
+     data-ad-slot="5015957971"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</center>-->
+<div id="comments">
+    <h3 id="resp">Comment</h3>
+  <ol class="commets-list">
+    		<li class="comment even thread-even depth-1" id="comment-34">
+				<div id="div-comment-34" class="comment-body">
+				<div class="comment-author vcard">
+			<img alt="" src="./[11]-Ubuntu 16.04 with CUDA にCaffeをインストール _ ロボット研究者の戯言_files/6c05b70ea3c2a4f86a9a8d5d38d7419c.png" srcset="https://secure.gravatar.com/avatar/6c05b70ea3c2a4f86a9a8d5d38d7419c?s=110&amp;d=mm&amp;r=g 2x" class="avatar avatar-55 photo" height="55" width="55">			<cite class="fn">Johnf169</cite> <span class="says">より:</span>		</div>
+		
+		<div class="comment-meta commentmetadata"><a href="https://robotics4society.com/2016/06/15/ubuntu1604-caffe/#comment-34">
+			2016年11月22日 9:09 AM</a>		</div>
+
+		<p>The finest sites and blogs and forums centered on literature and learning? bdceebeekbaf</p>
+
+		<div class="reply"><a rel="nofollow" class="comment-reply-link" href="https://robotics4society.com/2016/06/15/ubuntu1604-caffe/?replytocom=34#respond" onclick="return addComment.moveForm( &quot;div-comment-34&quot;, &quot;34&quot;, &quot;respond&quot;, &quot;6&quot; )" aria-label="Johnf169 に返信">返信</a></div>
+				</div>
+		</li><!-- #comment-## -->
+  </ol>
+  	<div id="respond" class="comment-respond">
+		<h3 id="reply-title" class="comment-reply-title">Message <small><a rel="nofollow" id="cancel-comment-reply-link" href="https://robotics4society.com/2016/06/15/ubuntu1604-caffe/#respond" style="display:none;">コメントをキャンセル</a></small></h3>			<form action="https://robotics4society.com/wp-comments-post.php" method="post" id="commentform" class="comment-form">
+				<p class="comment-notes"><span id="email-notes">メールアドレスが公開されることはありません。</span> <span class="required">*</span> が付いている欄は必須項目です</p><p class="comment-form-comment"><label for="comment">コメント</label> <textarea id="comment" name="comment" cols="45" rows="8" maxlength="65525" required="required"></textarea></p><p class="comment-form-author"><label for="author">名前 <span class="required">*</span></label> <input id="author" name="author" type="text" value="" size="30" maxlength="245" required="required"></p>
+<p class="comment-form-email"><label for="email">メールアドレス <span class="required">*</span></label> <input id="email" name="email" type="text" value="" size="30" maxlength="100" aria-describedby="email-notes" required="required"></p>
+<p class="comment-form-url"><label for="url">サイト</label> <input id="url" name="url" type="text" value="" size="30" maxlength="200"></p>
+<p class="form-submit"><input name="submit" type="submit" id="submit" class="submit" value="コメントを送信"> <input type="hidden" name="comment_post_ID" value="6" id="comment_post_ID">
+<input type="hidden" name="comment_parent" id="comment_parent" value="0">
+</p><p style="display: none;"><input type="hidden" id="akismet_comment_nonce" name="akismet_comment_nonce" value="b44ef218ec"></p><p style="display: none;"></p>			<input type="hidden" id="ak_js" name="ak_js" value="1553151869491"></form>
+			</div><!-- #respond -->
+	</div>
+<!-- END singer -->            
+            <!-- 関連記事 -->
+            <h3 class="point"><i class="fa fa-th-list"></i>&nbsp;  関連記事</h3>
+            <div id="kanren">
+                        <dl class="clearfix">
+    <dt> <a href="https://robotics4society.com/2016/06/23/chainer-tutorial1/">
+            <img width="150" height="150" src="./[11]-Ubuntu 16.04 with CUDA にCaffeをインストール _ ロボット研究者の戯言_files/intro_chainer-150x150.png" class="attachment-thumb150 size-thumb150 wp-post-image" alt="intro_chainer" srcset="https://robotics4society.com/wp-content/uploads/2016/06/intro_chainer-150x150.png 150w, https://robotics4society.com/wp-content/uploads/2016/06/intro_chainer-100x100.png 100w" sizes="(max-width: 150px) 100vw, 150px">            </a> </dt>
+    <dd>
+      <h5><a href="https://robotics4society.com/2016/06/23/chainer-tutorial1/">
+        Chainer公式チュートリアル1/5（日本語訳）        </a></h5>
+      <div class="smanone">
+        <p>Chinerチュートリアルの日本語訳を記載します．ところどころ意訳をしていますが … </p>
+      </div>
+    </dd>
+  </dl>
+    <dl class="clearfix">
+    <dt> <a href="https://robotics4society.com/2016/10/26/chrome-error/">
+            <img width="150" height="150" src="./[11]-Ubuntu 16.04 with CUDA にCaffeをインストール _ ロボット研究者の戯言_files/quicoff-150x150.png" class="attachment-thumb150 size-thumb150 wp-post-image" alt="" srcset="https://robotics4society.com/wp-content/uploads/2016/10/quicoff-150x150.png 150w, https://robotics4society.com/wp-content/uploads/2016/10/quicoff-100x100.png 100w" sizes="(max-width: 150px) 100vw, 150px">            </a> </dt>
+    <dd>
+      <h5><a href="https://robotics4society.com/2016/10/26/chrome-error/">
+        Ubuntu 16.04 で Google Chrome がおかしい        </a></h5>
+      <div class="smanone">
+        <p>新しいPCにUbuntuをインストール 最近新しいラップトップPC” … </p>
+      </div>
+    </dd>
+  </dl>
+    <dl class="clearfix">
+    <dt> <a href="https://robotics4society.com/2016/06/16/ubuntu-chrome/">
+            <img width="150" height="150" src="./[11]-Ubuntu 16.04 with CUDA にCaffeをインストール _ ロボット研究者の戯言_files/error1-150x150.png" class="attachment-thumb150 size-thumb150 wp-post-image" alt="" srcset="https://robotics4society.com/wp-content/uploads/2016/06/error1-150x150.png 150w, https://robotics4society.com/wp-content/uploads/2016/06/error1-100x100.png 100w" sizes="(max-width: 150px) 100vw, 150px">            </a> </dt>
+    <dd>
+      <h5><a href="https://robotics4society.com/2016/06/16/ubuntu-chrome/">
+        Ubuntu 16.04 にGoogle Chromeをインストール        </a></h5>
+      <div class="smanone">
+        <p>はじめに 私はWindowsでもLinuxでもAndroidでもGoogle C … </p>
+      </div>
+    </dd>
+  </dl>
+    <dl class="clearfix">
+    <dt> <a href="https://robotics4society.com/2016/07/25/dnn-vehicle/">
+            <img src="./[11]-Ubuntu 16.04 with CUDA にCaffeをインストール _ ロボット研究者の戯言_files/no-img.png" alt="no image" title="no image" width="100" height="100">
+            </a> </dt>
+    <dd>
+      <h5><a href="https://robotics4society.com/2016/07/25/dnn-vehicle/">
+        Deep Learningによる自動運転（Audi, Nvidia）        </a></h5>
+      <div class="smanone">
+        <p>7/22(金)に名古屋で行われたNVIDIAのセミナー「NVIDIA Learn … </p>
+      </div>
+    </dd>
+  </dl>
+    <dl class="clearfix">
+    <dt> <a href="https://robotics4society.com/2017/12/06/dapi_train/">
+            <img width="150" height="150" src="./[11]-Ubuntu 16.04 with CUDA にCaffeをインストール _ ロボット研究者の戯言_files/robot4society-1-150x150.png" class="attachment-thumb150 size-thumb150 wp-post-image" alt="logo" srcset="https://robotics4society.com/wp-content/uploads/2016/06/robot4society-1-150x150.png 150w, https://robotics4society.com/wp-content/uploads/2016/06/robot4society-1-100x100.png 100w" sizes="(max-width: 150px) 100vw, 150px">            </a> </dt>
+    <dd>
+      <h5><a href="https://robotics4society.com/2017/12/06/dapi_train/">
+        TensorFlow Object Detection API で既存データセットを学習        </a></h5>
+      <div class="smanone">
+        <p>既存データセットから学習 前回の記事では学習済みのモデルから画像上の物体を検出し … </p>
+      </div>
+    </dd>
+  </dl>
+    <dl class="clearfix">
+    <dt> <a href="https://robotics4society.com/2017/04/03/jetson-caffe/">
+            <img width="150" height="150" src="./[11]-Ubuntu 16.04 with CUDA にCaffeをインストール _ ロボット研究者の戯言_files/robot4society-1-150x150.png" class="attachment-thumb150 size-thumb150 wp-post-image" alt="logo" srcset="https://robotics4society.com/wp-content/uploads/2016/06/robot4society-1-150x150.png 150w, https://robotics4society.com/wp-content/uploads/2016/06/robot4society-1-100x100.png 100w" sizes="(max-width: 150px) 100vw, 150px">            </a> </dt>
+    <dd>
+      <h5><a href="https://robotics4society.com/2017/04/03/jetson-caffe/">
+        Jetson TX1にCaffeをインストール        </a></h5>
+      <div class="smanone">
+        <p>デスクトップPCにインストールする時とちょっと違う 以前デスクトップ版のUbun … </p>
+      </div>
+    </dd>
+  </dl>
+    <dl class="clearfix">
+    <dt> <a href="https://robotics4society.com/2016/06/16/ubuntu-setup/">
+            <img src="./[11]-Ubuntu 16.04 with CUDA にCaffeをインストール _ ロボット研究者の戯言_files/no-img.png" alt="no image" title="no image" width="100" height="100">
+            </a> </dt>
+    <dd>
+      <h5><a href="https://robotics4society.com/2016/06/16/ubuntu-setup/">
+        Ubuntuインストール時の設定とソフトのインストール        </a></h5>
+      <div class="smanone">
+        <p>はじめに この記事は私が毎回の設定を楽にするために存在する，いわば備忘録的なもの … </p>
+      </div>
+    </dd>
+  </dl>
+    <dl class="clearfix">
+    <dt> <a href="https://robotics4society.com/2017/03/30/jetson-sd/">
+            <img width="150" height="150" src="./[11]-Ubuntu 16.04 with CUDA にCaffeをインストール _ ロボット研究者の戯言_files/sdformat-150x150.png" class="attachment-thumb150 size-thumb150 wp-post-image" alt="" srcset="https://robotics4society.com/wp-content/uploads/2017/03/sdformat-150x150.png 150w, https://robotics4society.com/wp-content/uploads/2017/03/sdformat-100x100.png 100w" sizes="(max-width: 150px) 100vw, 150px">            </a> </dt>
+    <dd>
+      <h5><a href="https://robotics4society.com/2017/03/30/jetson-sd/">
+        JetsonでSDカードをストレージとして使う        </a></h5>
+      <div class="smanone">
+        <p>Jetsonの欠点 先日，JetPackを用いてJetson TX1にUbunt … </p>
+      </div>
+    </dd>
+  </dl>
+    <dl class="clearfix">
+    <dt> <a href="https://robotics4society.com/2016/06/15/ubuntu-boot/">
+            <img width="150" height="49" src="./[11]-Ubuntu 16.04 with CUDA にCaffeをインストール _ ロボット研究者の戯言_files/ato.png" class="attachment-thumb150 size-thumb150 wp-post-image" alt="after" srcset="https://robotics4society.com/wp-content/uploads/2016/06/ato.png 718w, https://robotics4society.com/wp-content/uploads/2016/06/ato-300x97.png 300w" sizes="(max-width: 150px) 100vw, 150px">            </a> </dt>
+    <dd>
+      <h5><a href="https://robotics4society.com/2016/06/15/ubuntu-boot/">
+        Ubuntuでブートの設定を変更する        </a></h5>
+      <div class="smanone">
+        <p>はじめに UbuntuをWindowsなどのOSとマルチブートで使用している人は … </p>
+      </div>
+    </dd>
+  </dl>
+    <dl class="clearfix">
+    <dt> <a href="https://robotics4society.com/2017/03/29/jetson-package/">
+            <img width="150" height="150" src="./[11]-Ubuntu 16.04 with CUDA にCaffeをインストール _ ロボット研究者の戯言_files/robot4society-1-150x150.png" class="attachment-thumb150 size-thumb150 wp-post-image" alt="logo" srcset="https://robotics4society.com/wp-content/uploads/2016/06/robot4society-1-150x150.png 150w, https://robotics4society.com/wp-content/uploads/2016/06/robot4society-1-100x100.png 100w" sizes="(max-width: 150px) 100vw, 150px">            </a> </dt>
+    <dd>
+      <h5><a href="https://robotics4society.com/2017/03/29/jetson-package/">
+        JetPackで構築した環境で色々パッケージが足りない        </a></h5>
+      <div class="smanone">
+        <p>色々足りない… 先日JetPackを用いてJetson TX1にUb … </p>
+      </div>
+    </dd>
+  </dl>
+      </div>
+            
+            <!--ページナビ-->
+            <div class="p-navi clearfix">
+              <dl>
+                                                <dt>NEXT </dt>
+                <dd><a href="https://robotics4society.com/2016/06/15/ubuntu-boot/">Ubuntuでブートの設定を変更する</a></dd>
+                              </dl>
+            </div>
+          </aside>
+        </div>
+        <!--/post--> 
+      </article>
+    </main>
+  </div>
+  <!-- /#contentInner -->
+  <div id="side">
+<aside>
+  <div class="ad">
+          </div>
+  <!-- RSSボタンです -->
+  <div class="rssbox"> <a href="https://robotics4society.com/?feed=rss2"><i class="fa fa-rss-square"></i>&nbsp;購読する</a> </div>
+  <!-- RSSボタンここまで -->
+  <div id="search">
+  <form method="get" id="searchform" action="https://robotics4society.com/">
+    <label class="hidden" for="s">
+          </label>
+    <input type="text" value="" name="s" id="s">
+    <input type="image" src="./[11]-Ubuntu 16.04 with CUDA にCaffeをインストール _ ロボット研究者の戯言_files/search.png" alt="検索" id="searchsubmit" value="Search">
+  </form>
+</div>
+<!-- /stinger --> 
+  <!-- 最近のエントリ -->
+  <h4 class="menu_underh2"> NEW POST</h4>
+  <div id="kanren">
+        <dl class="clearfix">
+    <dt> <a href="https://robotics4society.com/2018/04/26/odapi_protoc_error/">
+            <img width="150" height="150" src="./[11]-Ubuntu 16.04 with CUDA にCaffeをインストール _ ロボット研究者の戯言_files/robot4society-150x150.png" class="attachment-thumb150 size-thumb150 wp-post-image" alt="logo" srcset="https://robotics4society.com/wp-content/uploads/2016/06/robot4society-150x150.png 150w, https://robotics4society.com/wp-content/uploads/2016/06/robot4society-100x100.png 100w" sizes="(max-width: 150px) 100vw, 150px">            </a> </dt>
+    <dd>
+      <h5><a href="https://robotics4society.com/2018/04/26/odapi_protoc_error/">
+        TensorFlow OD API ビルド時に protoc でエラーが出た        </a></h5>
+      <div class="smanone">
+        <p>TensorFlow Object Detection API 以前も紹介しまし … </p>
+      </div>
+    </dd>
+  </dl>
+    <dl class="clearfix">
+    <dt> <a href="https://robotics4society.com/2018/04/25/python_load_image/">
+            <img width="150" height="150" src="./[11]-Ubuntu 16.04 with CUDA にCaffeをインストール _ ロボット研究者の戯言_files/robot4society-150x150.png" class="attachment-thumb150 size-thumb150 wp-post-image" alt="logo" srcset="https://robotics4society.com/wp-content/uploads/2016/06/robot4society-150x150.png 150w, https://robotics4society.com/wp-content/uploads/2016/06/robot4society-100x100.png 100w" sizes="(max-width: 150px) 100vw, 150px">            </a> </dt>
+    <dd>
+      <h5><a href="https://robotics4society.com/2018/04/25/python_load_image/">
+        Python で画像の読み込みが遅い        </a></h5>
+      <div class="smanone">
+        <p>Python で画像の読み込みが遅い 最近，物体検出プログラムを作成しているので … </p>
+      </div>
+    </dd>
+  </dl>
+    <dl class="clearfix">
+    <dt> <a href="https://robotics4society.com/2018/04/23/cuda_error_publickey/">
+            <img width="150" height="150" src="./[11]-Ubuntu 16.04 with CUDA にCaffeをインストール _ ロボット研究者の戯言_files/robot4society-150x150.png" class="attachment-thumb150 size-thumb150 wp-post-image" alt="logo" srcset="https://robotics4society.com/wp-content/uploads/2016/06/robot4society-150x150.png 150w, https://robotics4society.com/wp-content/uploads/2016/06/robot4society-100x100.png 100w" sizes="(max-width: 150px) 100vw, 150px">            </a> </dt>
+    <dd>
+      <h5><a href="https://robotics4society.com/2018/04/23/cuda_error_publickey/">
+        apt update でエラー発生 “the public key is not available”        </a></h5>
+      <div class="smanone">
+        <p>先日，Jetson TX2 に JetPack3.2 で諸々インストールしたので … </p>
+      </div>
+    </dd>
+  </dl>
+    <dl class="clearfix">
+    <dt> <a href="https://robotics4society.com/2018/04/11/winscp/">
+            <img width="150" height="150" src="./[11]-Ubuntu 16.04 with CUDA にCaffeをインストール _ ロボット研究者の戯言_files/winscp-150x150.png" class="attachment-thumb150 size-thumb150 wp-post-image" alt="" srcset="https://robotics4society.com/wp-content/uploads/2018/04/winscp-150x150.png 150w, https://robotics4society.com/wp-content/uploads/2018/04/winscp-100x100.png 100w" sizes="(max-width: 150px) 100vw, 150px">            </a> </dt>
+    <dd>
+      <h5><a href="https://robotics4society.com/2018/04/11/winscp/">
+        WinSCPを使ってPC・サーバ間でファイルの送受信を行う        </a></h5>
+      <div class="smanone">
+        <p>Windows PC・サーバ間でファイルの送受信を行う メールで送受信できないよ … </p>
+      </div>
+    </dd>
+  </dl>
+    <dl class="clearfix">
+    <dt> <a href="https://robotics4society.com/2018/04/03/emacs_bs/">
+            <img width="150" height="150" src="./[11]-Ubuntu 16.04 with CUDA にCaffeをインストール _ ロボット研究者の戯言_files/cropped-logo-150x150.png" class="attachment-thumb150 size-thumb150 wp-post-image" alt="" srcset="https://robotics4society.com/wp-content/uploads/2016/06/cropped-logo-150x150.png 150w, https://robotics4society.com/wp-content/uploads/2016/06/cropped-logo-300x300.png 300w, https://robotics4society.com/wp-content/uploads/2016/06/cropped-logo-100x100.png 100w, https://robotics4society.com/wp-content/uploads/2016/06/cropped-logo-270x270.png 270w, https://robotics4society.com/wp-content/uploads/2016/06/cropped-logo-192x192.png 192w, https://robotics4society.com/wp-content/uploads/2016/06/cropped-logo-180x180.png 180w, https://robotics4society.com/wp-content/uploads/2016/06/cropped-logo-32x32.png 32w, https://robotics4society.com/wp-content/uploads/2016/06/cropped-logo.png 512w" sizes="(max-width: 150px) 100vw, 150px">            </a> </dt>
+    <dd>
+      <h5><a href="https://robotics4society.com/2018/04/03/emacs_bs/">
+        Emacs で Ctrl+h をバックスペースにする        </a></h5>
+      <div class="smanone">
+        <p>ターミナルでは “Ctrl + h” でバックスペースと … </p>
+      </div>
+    </dd>
+  </dl>
+      <!--
+  <center>スポンサーリンク<br><script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-7021391156101005"
+     data-ad-slot="4784115571"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script></center>-->
+</div>
+  <!-- /最近のエントリ -->
+  <div id="mybox">
+    <ul><li><div id="search">
+  <form method="get" id="searchform" action="https://robotics4society.com/">
+    <label class="hidden" for="s">
+          </label>
+    <input type="text" value="" name="s" id="s">
+    <input type="image" src="./[11]-Ubuntu 16.04 with CUDA にCaffeをインストール _ ロボット研究者の戯言_files/search.png" alt="検索" id="searchsubmit" value="Search">
+  </form>
+</div>
+<!-- /stinger --> 
+</li></ul>		<ul><li>		<h4 class="menu_underh2">最近の投稿</h4>		<ul>
+											<li>
+					<a href="https://robotics4society.com/2018/04/26/odapi_protoc_error/">TensorFlow OD API ビルド時に protoc でエラーが出た</a>
+									</li>
+											<li>
+					<a href="https://robotics4society.com/2018/04/25/python_load_image/">Python で画像の読み込みが遅い</a>
+									</li>
+											<li>
+					<a href="https://robotics4society.com/2018/04/23/cuda_error_publickey/">apt update でエラー発生 “the public key is not available”</a>
+									</li>
+											<li>
+					<a href="https://robotics4society.com/2018/04/11/winscp/">WinSCPを使ってPC・サーバ間でファイルの送受信を行う</a>
+									</li>
+											<li>
+					<a href="https://robotics4society.com/2018/04/03/emacs_bs/">Emacs で Ctrl+h をバックスペースにする</a>
+									</li>
+					</ul>
+		</li></ul><ul><li><h4 class="menu_underh2">最近のコメント</h4><ul id="recentcomments"><li class="recentcomments"><a href="https://robotics4society.com/2017/08/23/odapi_test/#comment-6061">TensorFlow Object Detection API で学習済みモデルを使って物体検出</a> に <span class="comment-author-link">ty01_wunsch</span> より</li><li class="recentcomments"><a href="https://robotics4society.com/2018/04/26/odapi_protoc_error/#comment-6060">TensorFlow OD API ビルド時に protoc でエラーが出た</a> に <span class="comment-author-link">ty01_wunsch</span> より</li><li class="recentcomments"><a href="https://robotics4society.com/2016/06/16/ubuntu-chrome/#comment-5711">Ubuntu 16.04 にGoogle Chromeをインストール</a> に <span class="comment-author-link"><a href="http://knowledge-io.com/2018/08/11/ubuntu16-04%e3%81%abchrome%e3%82%92%e3%82%a4%e3%83%b3%e3%82%b9%e3%83%88%e3%83%bc%e3%83%ab%e3%81%99%e3%82%8b%e3%80%90%e5%9c%b0%e5%91%b3%e3%81%ab%e3%83%8f%e3%83%9e%e3%" rel="external nofollow" class="url">Ubuntu16.04にChromeをインストールする【地味にハマる】 – Knowledge-IO</a></span> より</li><li class="recentcomments"><a href="https://robotics4society.com/2016/06/16/ubuntu-chrome/#comment-5704">Ubuntu 16.04 にGoogle Chromeをインストール</a> に <span class="comment-author-link"><a href="https://knowledge-io.com/2018/08/11/ubuntu16-04%e3%81%abchrome%e3%82%92%e3%82%a4%e3%83%b3%e3%82%b9%e3%83%88%e3%83%bc%e3%83%ab%e3%81%99%e3%82%8b%e3%80%90%e5%9c%b0%e5%91%b3%e3%81%ab%e3%83%8f%e3%83%9e%e3" rel="external nofollow" class="url">Ubuntu16.04にChromeをインストールする【地味にハマる】 – Knowledge-IO</a></span> より</li><li class="recentcomments"><a href="https://robotics4society.com/2018/04/26/odapi_protoc_error/#comment-4901">TensorFlow OD API ビルド時に protoc でエラーが出た</a> に <span class="comment-author-link"><a href="http://na/" rel="external nofollow" class="url">Sush</a></span> より</li></ul></li></ul><ul><li><h4 class="menu_underh2">アーカイブ</h4>		<ul>
+			<li><a href="https://robotics4society.com/2018/04/">2018年4月</a></li>
+	<li><a href="https://robotics4society.com/2018/03/">2018年3月</a></li>
+	<li><a href="https://robotics4society.com/2017/12/">2017年12月</a></li>
+	<li><a href="https://robotics4society.com/2017/08/">2017年8月</a></li>
+	<li><a href="https://robotics4society.com/2017/06/">2017年6月</a></li>
+	<li><a href="https://robotics4society.com/2017/04/">2017年4月</a></li>
+	<li><a href="https://robotics4society.com/2017/03/">2017年3月</a></li>
+	<li><a href="https://robotics4society.com/2017/01/">2017年1月</a></li>
+	<li><a href="https://robotics4society.com/2016/10/">2016年10月</a></li>
+	<li><a href="https://robotics4society.com/2016/07/">2016年7月</a></li>
+	<li><a href="https://robotics4society.com/2016/06/">2016年6月</a></li>
+		</ul>
+		</li></ul><ul><li><h4 class="menu_underh2">カテゴリー</h4>		<ul>
+	<li class="cat-item cat-item-101"><a href="https://robotics4society.com/category/cc/">C(C++)</a>
+</li>
+	<li class="cat-item cat-item-5"><a href="https://robotics4society.com/category/%e6%a9%9f%e6%a2%b0%e5%ad%a6%e7%bf%92/caffe/">Caffe</a>
+</li>
+	<li class="cat-item cat-item-45"><a href="https://robotics4society.com/category/%e6%a9%9f%e6%a2%b0%e5%ad%a6%e7%bf%92/chainer/">Chainer</a>
+</li>
+	<li class="cat-item cat-item-110"><a href="https://robotics4society.com/category/jetson/">Jetson</a>
+</li>
+	<li class="cat-item cat-item-63"><a href="https://robotics4society.com/category/matlabsimulink/">MATLAB/Simulink</a>
+</li>
+	<li class="cat-item cat-item-117"><a href="https://robotics4society.com/category/nvidia/">Nvidia</a>
+</li>
+	<li class="cat-item cat-item-94"><a href="https://robotics4society.com/category/python/">Python</a>
+</li>
+	<li class="cat-item cat-item-122"><a href="https://robotics4society.com/category/%e6%a9%9f%e6%a2%b0%e5%ad%a6%e7%bf%92/tensorflow/">TensorFlow</a>
+</li>
+	<li class="cat-item cat-item-6"><a href="https://robotics4society.com/category/ubuntu/">Ubuntu</a>
+</li>
+	<li class="cat-item cat-item-141"><a href="https://robotics4society.com/category/windows/">Windows</a>
+</li>
+	<li class="cat-item cat-item-28"><a href="https://robotics4society.com/category/%e3%82%aa%e3%83%bc%e3%83%87%e3%82%a3%e3%82%aa/">オーディオ</a>
+</li>
+	<li class="cat-item cat-item-39"><a href="https://robotics4society.com/category/%e3%81%9d%e3%81%ae%e4%bb%96/">その他</a>
+</li>
+	<li class="cat-item cat-item-4"><a href="https://robotics4society.com/category/%e6%a9%9f%e6%a2%b0%e5%ad%a6%e7%bf%92/">機械学習</a>
+</li>
+	<li class="cat-item cat-item-55"><a href="https://robotics4society.com/category/%e8%87%aa%e5%8b%95%e9%81%8b%e8%bb%a2/">自動運転</a>
+</li>
+	<li class="cat-item cat-item-75"><a href="https://robotics4society.com/category/%e9%9b%bb%e5%ad%90%e5%b7%a5%e4%bd%9c/">電子工作</a>
+</li>
+		</ul>
+</li></ul><ul><li><h4 class="menu_underh2">メタ情報</h4>			<ul>
+						<li><a href="https://robotics4society.com/wp-login.php">ログイン</a></li>
+			<li><a href="https://robotics4society.com/feed/">投稿の <abbr title="Really Simple Syndication">RSS</abbr></a></li>
+			<li><a href="https://robotics4society.com/comments/feed/">コメントの <abbr title="Really Simple Syndication">RSS</abbr></a></li>
+			<li><a href="https://ja.wordpress.org/" title="Powered by WordPress, state-of-the-art semantic personal publishing platform.">WordPress.org</a></li>			</ul>
+			</li></ul>  </div>
+  <!-- スマホだけのアドセンス -->
+      <!-- /スマホだけのアドセンス -->
+  <div id="scrollad">
+      <!--ここにgoogleアドセンスコードを貼ると規約違反になるので注意して下さい-->
+
+  </div>
+</aside>
+</div></div>
+<!--/#content -->
+<footer id="footer" style="top: 0px;">
+  <h3>
+          Ubuntu 16.04 with CUDA にCaffeをインストール      </h3>
+  <p>
+      </p>
+  <p class="copy">Copyright©
+    ロボット研究者の戯言    ,
+    2016    All Rights Reserved.</p>
+</footer>
+</div>
+<!-- /#wrapper --> 
+<!-- ページトップへ戻る -->
+<div id="page-top"><a href="https://robotics4society.com/2016/06/15/ubuntu1604-caffe/#wrapper" class="fa fa-angle-up"></a></div>
+<!-- ページトップへ戻る　終わり -->
+
+
+<ins class="adsbygoogle adsbygoogle-noablate" data-adsbygoogle-status="done" style="display: none !important;"><ins id="aswift_0_expand" style="display:inline-table;border:none;height:0px;margin:0;padding:0;position:relative;visibility:visible;width:0px;background-color:transparent;"><ins id="aswift_0_anchor" style="display:block;border:none;height:0px;margin:0;padding:0;position:relative;visibility:visible;width:0px;background-color:transparent;"><iframe frameborder="0" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" onload="var i=this.id,s=window.google_iframe_oncopy,H=s&amp;&amp;s.handlers,h=H&amp;&amp;H[i],w=this.contentWindow,d;try{d=w.document}catch(e){}if(h&amp;&amp;d&amp;&amp;(!d.body||!d.body.firstChild)){if(h.call){setTimeout(h,0)}else if(h.match){try{h=s.upd(h,i)}catch(e){}w.location.replace(h)}}" id="aswift_0" name="aswift_0" style="left:0;position:absolute;top:0;border:0px;width:0px;height:0px;" src="./[11]-Ubuntu 16.04 with CUDA にCaffeをインストール _ ロボット研究者の戯言_files/saved_resource(8).html"></iframe></ins></ins></ins><script type="text/javascript" src="./[11]-Ubuntu 16.04 with CUDA にCaffeをインストール _ ロボット研究者の戯言_files/wp-embed.min.js.ダウンロード"></script>
+<script async="async" type="text/javascript" src="./[11]-Ubuntu 16.04 with CUDA にCaffeをインストール _ ロボット研究者の戯言_files/form.js.ダウンロード"></script>
+<script type="text/javascript" src="./[11]-Ubuntu 16.04 with CUDA にCaffeをインストール _ ロボット研究者の戯言_files/base.js.ダウンロード"></script>
+<script type="text/javascript" src="./[11]-Ubuntu 16.04 with CUDA にCaffeをインストール _ ロボット研究者の戯言_files/scroll.js.ダウンロード"></script>
+<script type="text/javascript" src="./[11]-Ubuntu 16.04 with CUDA にCaffeをインストール _ ロボット研究者の戯言_files/jquery.tmpl.min.js.ダウンロード"></script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var amazonjsVars = {"thickboxUrl":"https:\/\/robotics4society.com\/wp-includes\/js\/thickbox\/","regionTemplate":{"LinkJP":"<iframe src=\"http:\/\/rcm-jp.amazon.co.jp\/e\/cm?t=ty01wunsch-22&o=9&p=8&l=as1&asins=${asins}&fc1=${fc1}&IS2=${IS2}&lt1=${lt1}&m=amazon&lc1=${lc1}&bc1=${bc1}&bg1=${bg1}&f=ifr\" style=\"width:120px;height:240px;\" scrolling=\"no\" marginwidth=\"0\" marginheight=\"0\" frameborder=\"0\"><\/iframe>"},"resource":{"BookAuthor":"\u8457\u8005","BookPublicationDate":"\u51fa\u7248\u65e5","BookPublisher":"\u51fa\u7248\u793e","NumberOfPagesValue":"${NumberOfPages}\u30da\u30fc\u30b8","ListPrice":"\u53c2\u8003\u4fa1\u683c","Price":"\u4fa1\u683c","PriceUsage":"\u4fa1\u683c\u304a\u3088\u3073\u767a\u9001\u53ef\u80fd\u6642\u671f\u306f\u8868\u793a\u3055\u308c\u305f\u65e5\u4ed8\/\u6642\u523b\u306e\u6642\u70b9\u306e\u3082\u306e\u3067\u3042\u308a\u3001\u5909\u66f4\u3055\u308c\u308b\u5834\u5408\u304c\u3042\u308a\u307e\u3059\u3002\u5546\u54c1\u306e\u8ca9\u58f2\u306b\u304a\u3044\u3066\u306f\u3001\u8cfc\u5165\u306e\u6642\u70b9\u3067 [Amazon.co.jp \u307e\u305f\u306f Javari.jp] \u306b\u8868\u793a\u3055\u308c\u3066\u3044\u308b\u4fa1\u683c\u304a\u3088\u3073\u767a\u9001\u53ef\u80fd\u6642\u671f\u306e\u60c5\u5831\u304c\u9069\u7528\u3055\u308c\u307e\u3059\u3002","PublicationDate":"\u767a\u58f2\u65e5","ReleaseDate":"\u30ea\u30ea\u30fc\u30b9\u65e5","SalesRank":"\u5546\u54c1\u30e9\u30f3\u30ad\u30f3\u30b0","SalesRankValue":"${SalesRank}\u4f4d","RunningTime":"\u6642\u9593","RunningTimeValue":"${RunningTime}\u5206","CustomerReviewTitle":"${Title} \u30ab\u30b9\u30bf\u30de\u30fc\u30ec\u30d3\u30e5\u30fc","SeeCustomerReviews":"\u30ab\u30b9\u30bf\u30de\u30fc\u30ec\u30d3\u30e5\u30fc\u3092\u898b\u308b","PriceUpdatedat":"(${UpdatedDate}\u6642\u70b9)"},"isCustomerReviewEnabled":"","isTrackEventEnabled":"","isFadeInEnabled":"","items":[{"Binding":"Personal Computers","Brand":"AMD","CatalogNumberList":{"CatalogNumberListElement":"##-AMD-HDE00ZFBGRBOX"},"EAN":"7301432722472","EANList":{"EANListElement":["7301432722472","0730143272247"]},"Feature":"\u5f62\u72b6\uff1a\u30bd\u30b1\u30c3\u30c8AM3","IsAutographed":"0","IsMemorabilia":"0","ItemDimensions":{"Height":"450","Length":"500","Weight":"105","Width":"300"},"Label":"AMD","Languages":{"Language":{"Name":"\u82f1\u8a9e","Type":"Original Language"}},"ListPrice":{"Amount":"25693","CurrencyCode":"JPY","FormattedPrice":"\uffe5 25,693"},"Manufacturer":"AMD","Model":"HDE00ZFBGRBOX","MPN":"HDE00ZFBGRBOX","PackageDimensions":{"Height":"300","Length":"496","Weight":"106","Width":"457"},"PackageQuantity":"1","PartNumber":"HDE00ZFBGRBOX","ProductGroup":"Personal Computer","ProductTypeName":"COMPUTER_PROCESSOR","Publisher":"AMD","ReleaseDate":"2010-12-10","Studio":"AMD","Title":"AMD PhenomII X6 1100T BE TDP125W 3.3GHz\u00d76 HDE00ZFBGRBOX","UPC":"730143272247","UPCList":{"UPCListElement":"730143272247"},"ASIN":"B004DALW5K","DetailPageURL":"https:\/\/www.amazon.co.jp\/AMD-PhenomII-TDP125W-3-3GHz%C3%976-HDE00ZFBGRBOX\/dp\/B004DALW5K?SubscriptionId=AKIAIETFORT3ZWQJZ5LQ&tag=ty01wunsch-22&linkCode=xm2&camp=2025&creative=165953&creativeASIN=B004DALW5K","SalesRank":71965,"IFrameReviewURL":"https:\/\/www.amazon.jp\/reviews\/iframe?akid=AKIAIETFORT3ZWQJZ5LQ&alinkCode=xm2&asin=B004DALW5K&atag=ty01wunsch-22&exp=2019-03-20T19%3A17%3A41Z&v=2&sig=qscQ7PpQE79dPWgsBF5ahoGMAjAUuU8zJB6q8m2iY8E%253D","OfferSummary":{"LowestNewPrice":{"Amount":"48802","CurrencyCode":"JPY","FormattedPrice":"\uffe5 48,802"},"TotalNew":"3","TotalUsed":"0","TotalCollectible":"0","TotalRefurbished":"0"},"SmallImage":{"src":"https:\/\/images-fe.ssl-images-amazon.com\/images\/I\/51Az8R3douL._SL75_.jpg","width":75,"height":75},"MediumImage":{"src":"https:\/\/images-fe.ssl-images-amazon.com\/images\/I\/51Az8R3douL._SL160_.jpg","width":160,"height":160},"LargeImage":{"src":"https:\/\/images-fe.ssl-images-amazon.com\/images\/I\/51Az8R3douL.jpg","width":500,"height":500},"CountryCode":"JP","UpdatedAt":1553023061},{"Binding":"Personal Computers","Brand":"\u30b5\u30f3\u30c7\u30a3\u30b9\u30af","EAN":"4523052016011","EANList":{"EANListElement":["4523052016011","7736952676484"]},"Feature":["\u5bb9\u91cf : 480GB","\u30b7\u30fc\u30b1\u30f3\u30b7\u30e3\u30eb\u8aad\u51fa\u3057\u901f\u5ea6 : \u6700\u5927550MB\/\u79d2\u3001\u30b7\u30fc\u30b1\u30f3\u30b7\u30e3\u30eb\u66f8\u8fbc\u307f\u901f\u5ea6 : \u6700\u5927500MB\/\u79d2","\u30e9\u30f3\u30c0\u30e0\u8aad\u51fa\u3057\u901f\u5ea6 : \u6700\u592798K IOPS\u3001\u30e9\u30f3\u30c0\u30e0\u66f8\u8fbc\u307f\u901f\u5ea6 : \u6700\u592780K IOPS","\u30a4\u30f3\u30bf\u30fc\u30d5\u30a7\u30fc\u30b9 : SATA\u30ea\u30d3\u30b8\u30e7\u30f33.0(6 Gbit\/\u79d2)","\u8010\u4e45\u6027 : MTBF 175\u4e07\u6642\u9593","NAND\u30d5\u30e9\u30c3\u30b7\u30e5 : SanDisk TLC \u30e1\u30e2\u30ea","\u52d5\u4f5c\u6e29\u5ea6\/\u4fdd\u5b58\u6e29\u5ea6 : 0\u00b0C~70\u00b0C \/ -55\u00b0C~85\u00b0C","\u4fdd\u8a3c\u671f\u9593 : 3\u5e74\u9593","\u540c\u68b1\u54c1 : \u53d6\u6271\u8aac\u660e\u66f8\/SSD\u8a3a\u65ad\u30bd\u30d5\u30c8\u30a6\u30a7\u30a2\u30af\u30fc\u30dd\u30f3(SSD\u30c0\u30c3\u30b7\u30e5\u30dc\u30fc\u30c9)"],"IsAdultProduct":"0","ItemDimensions":{"Height":"28","Length":"275","Weight":"2","Width":"396"},"Label":"\u30b5\u30f3\u30c7\u30a3\u30b9\u30af","Manufacturer":"\u30b5\u30f3\u30c7\u30a3\u30b9\u30af","Model":"SDSSDHII-480G-J26","MPN":"SDSSDHII-480G-J26","PackageDimensions":{"Height":"71","Length":"520","Weight":"2","Width":"394"},"PackageQuantity":"1","PartNumber":"SDSSDHII-480G-J26","ProductGroup":"Personal Computer","ProductTypeName":"COMPUTER_DRIVE_OR_STORAGE","Publisher":"\u30b5\u30f3\u30c7\u30a3\u30b9\u30af","ReleaseDate":"2015-11-13","Size":"480GB","Studio":"\u30b5\u30f3\u30c7\u30a3\u30b9\u30af","Title":"SanDisk  \u5185\u8535SSD 2.5\u30a4\u30f3\u30c1 \/ 480GB \/ SSD UltraII \/ SATA3.0 \/ 3\u5e74\u4fdd\u8a3c \/ SDSSDHII-480G-J26","ASIN":"B017BIMTMA","DetailPageURL":"https:\/\/www.amazon.co.jp\/SanDisk-2-5%E3%82%A4%E3%83%B3%E3%83%81-UltraII-SATA3-0-SDSSDHII-480G-J26\/dp\/B017BIMTMA?psc=1&SubscriptionId=AKIAIETFORT3ZWQJZ5LQ&tag=ty01wunsch-22&linkCode=xm2&camp=2025&creative=165953&creativeASIN=B017BIMTMA","SalesRank":17467,"IFrameReviewURL":"https:\/\/www.amazon.jp\/reviews\/iframe?akid=AKIAIETFORT3ZWQJZ5LQ&alinkCode=xm2&asin=B017BIMTMA&atag=ty01wunsch-22&exp=2019-03-20T19%3A17%3A41Z&v=2&sig=gV76l3s8KCbjJKROzoasBZk3VHl60THZ5HZTTBzz%252BgE%253D","OfferSummary":{"TotalNew":"0","TotalUsed":"0","TotalCollectible":"0","TotalRefurbished":"0"},"SmallImage":{"src":"https:\/\/images-fe.ssl-images-amazon.com\/images\/I\/41xOPwjmtwL._SL75_.jpg","width":75,"height":75},"MediumImage":{"src":"https:\/\/images-fe.ssl-images-amazon.com\/images\/I\/41xOPwjmtwL._SL160_.jpg","width":160,"height":160},"LargeImage":{"src":"https:\/\/images-fe.ssl-images-amazon.com\/images\/I\/41xOPwjmtwL.jpg","width":500,"height":500},"CountryCode":"JP","UpdatedAt":1553023061},{"Binding":"Personal Computers","Brand":"\u65e5\u672c\u30ae\u30ac\u30d0\u30a4\u30c8","EAN":"4681280039865","EANList":{"EANListElement":["4681280039865","4988755020503"]},"Feature":["Geforce GTX960\u642d\u8f09\u30d3\u30c7\u30aa\u30ab\u30fc\u30c9","\u30aa\u30fc\u30d0\u30fc\u30af\u30ed\u30c3\u30af\u30e2\u30c7\u30eb","4GB\u306e\u30d3\u30c7\u30aa\u30e1\u30e2\u30ea\u3092\u642d\u8f09","\u4f4e\u8ca0\u8377\u6642\u306b\u30d5\u30a1\u30f3\u304c\u5b8c\u5168\u306b\u30b9\u30c8\u30c3\u30d7\u3057\u3001\u9ad8\u3044\u9759\u97f3\u6027\u3092\u5b9f\u73fe"],"Label":"\u65e5\u672c\u30ae\u30ac\u30d0\u30a4\u30c8","Manufacturer":"\u65e5\u672c\u30ae\u30ac\u30d0\u30a4\u30c8","Model":"GV-N960WF2OC-4GD","MPN":"GV-N960WF2OC-4GD","PackageDimensions":{"Height":"240","Length":"1319","Weight":"223","Width":"929"},"PackageQuantity":"1","PartNumber":"GV-N960WF2OC-4GD","ProductGroup":"Personal Computer","ProductTypeName":"VIDEO_CARD","Publisher":"\u65e5\u672c\u30ae\u30ac\u30d0\u30a4\u30c8","ReleaseDate":"2015-03-20","Studio":"\u65e5\u672c\u30ae\u30ac\u30d0\u30a4\u30c8","Title":"GIGABYTE \u30d3\u30c7\u30aa\u30ab\u30fc\u30c9 Geforce GTX960\u642d\u8f09 \u30aa\u30fc\u30d0\u30fc\u30af\u30ed\u30c3\u30af\u30e2\u30c7\u30eb GV-N960WF2OC-4GD","ASIN":"B00UJK38YQ","DetailPageURL":"https:\/\/www.amazon.co.jp\/GIGABYTE-Geforce-GTX960%E6%90%AD%E8%BC%89-%E3%82%AA%E3%83%BC%E3%83%90%E3%83%BC%E3%82%AF%E3%83%AD%E3%83%83%E3%82%AF%E3%83%A2%E3%83%87%E3%83%AB-GV-N960WF2OC-4GD\/dp\/B00UJK38YQ?SubscriptionId=AKIAIETFORT3ZWQJZ5LQ&tag=ty01wunsch-22&linkCode=xm2&camp=2025&creative=165953&creativeASIN=B00UJK38YQ","SalesRank":34462,"IFrameReviewURL":"https:\/\/www.amazon.jp\/reviews\/iframe?akid=AKIAIETFORT3ZWQJZ5LQ&alinkCode=xm2&asin=B00UJK38YQ&atag=ty01wunsch-22&exp=2019-03-20T19%3A17%3A41Z&v=2&sig=CbR2tsh88wq4BLdK0IePp8TZjtiSVOdjOwaeqW3DnLU%253D","OfferSummary":{"LowestNewPrice":{"Amount":"32000","CurrencyCode":"JPY","FormattedPrice":"\uffe5 32,000"},"LowestUsedPrice":{"Amount":"15800","CurrencyCode":"JPY","FormattedPrice":"\uffe5 15,800"},"TotalNew":"3","TotalUsed":"2","TotalCollectible":"0","TotalRefurbished":"0"},"SmallImage":{"src":"https:\/\/images-fe.ssl-images-amazon.com\/images\/I\/51625kcgC-L._SL75_.jpg","width":75,"height":75},"MediumImage":{"src":"https:\/\/images-fe.ssl-images-amazon.com\/images\/I\/51625kcgC-L._SL160_.jpg","width":160,"height":160},"LargeImage":{"src":"https:\/\/images-fe.ssl-images-amazon.com\/images\/I\/51625kcgC-L.jpg","width":500,"height":500},"CountryCode":"JP","UpdatedAt":1553023061}]};
+/* ]]> */
+</script>
+<script type="text/javascript" src="./[11]-Ubuntu 16.04 with CUDA にCaffeをインストール _ ロボット研究者の戯言_files/amazonjs.js.ダウンロード"></script>
+<iframe scrolling="no" frameborder="0" allowtransparency="true" src="./[11]-Ubuntu 16.04 with CUDA にCaffeをインストール _ ロボット研究者の戯言_files/widget_iframe.2e9f365dae390394eb8d923cba8c5b11.html" title="Twitter settings iframe" style="display: none;"></iframe><iframe id="google_osd_static_frame_6390351700900" name="google_osd_static_frame" style="display: none; width: 0px; height: 0px;" src="./[11]-Ubuntu 16.04 with CUDA にCaffeをインストール _ ロボット研究者の戯言_files/saved_resource(9).html"></iframe><iframe name="oauth2relay478237765" id="oauth2relay478237765" src="./[11]-Ubuntu 16.04 with CUDA にCaffeをインストール _ ロボット研究者の戯言_files/postmessageRelay.html" tabindex="-1" aria-hidden="true" style="width: 1px; height: 1px; position: absolute; top: -100px;"></iframe><div style="visibility: hidden; position: absolute; top: 0px;">S</div></body><iframe id="google_shimpl" style="display: none;" src="./[11]-Ubuntu 16.04 with CUDA にCaffeをインストール _ ロボット研究者の戯言_files/saved_resource(10).html"></iframe><iframe id="google_esf" name="google_esf" src="./[11]-Ubuntu 16.04 with CUDA にCaffeをインストール _ ロボット研究者の戯言_files/zrt_lookup.html" data-ad-client="ca-pub-7021391156101005" style="display: none;"></iframe></html>

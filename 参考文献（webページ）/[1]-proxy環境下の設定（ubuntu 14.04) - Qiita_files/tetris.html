@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<!-- saved from url=(0148)https://s0.2mdn.net/ads/richmedia/studio/mu/templates/tetris/bootstrap-3/tetris.html?e=101&renderingType=2&leftOffset=0&topOffset=0&c=K43Fp6PkVN&t=1 -->
+<html lang="en" class="wf-roboto-n4-active wf-active"><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+  <title>Tetris Layout</title>
+  <meta data-template-name="CustomLightbox_Layout">
+  <!-- Required for studio to fetch the lightbox standard json schema during ad creation.
+       Note: A specific GWD version is expected by studio but has no effect on tetris behavior. -->
+  <meta name="generator" content="Google Web Designer 1.4.2.0915">
+  <link rel="stylesheet" href="./tetris.min.css">
+  <link rel="stylesheet" href="./tetris_layout.min.css">
+  <script type="text/javascript" id="www-widgetapi-script" src="./www-widgetapi.js.&#12480;&#12454;&#12531;&#12525;&#12540;&#12489;" async=""></script><script src="./tetris_gdn_adapter.min.js.&#12480;&#12454;&#12531;&#12525;&#12540;&#12489;"></script>
+  <script src="./f.txt"></script>
+  <script src="./Enabler_01_230.js.&#12480;&#12454;&#12531;&#12525;&#12540;&#12489;"></script>
+  <script src="./CustomElements.min.js.&#12480;&#12454;&#12531;&#12525;&#12540;&#12489;"></script>
+  <script src="./tetris.min.js.&#12480;&#12454;&#12531;&#12525;&#12540;&#12489;"></script>
+  <script src="./tetris_layout.min.js.&#12480;&#12454;&#12531;&#12525;&#12540;&#12489;"></script>
+  <script>
+    // TODO(rneale): b/24775203
+    Enabler.exit = Enabler.exitOverride;
+
+    window.disableEventBubbling = true;
+    function GdnLayout() {}
+    GdnLayout.getConfig =
+        studioinnovation.layouts.lightbox.tetris.gdnAdapter.
+        translateFromEnablerParams;
+
+    function GdnPreview() {}
+    GdnPreview.getConfig =
+        studioinnovation.layouts.lightbox.tetris.gdnAdapter.
+        translateFromDataObject;
+
+    var modulesLoadedHandler = function() {
+      new studioinnovation.layouts.lightbox.tetris.Tetris();
+    };
+
+    // Note: Must use explicit module names for Studio's static analysis during ad creation.
+    Enabler.loadModules([studio.module.ModuleId.CONFIGURABLE, studio.module.ModuleId.GDN],
+                        modulesLoadedHandler);
+
+    // Required for compatibility with the studio creation workflow.
+    Enabler.setHint('expansionMode', 'lightbox');
+  </script>
+  <script>
+    // This function is only used for Studio static parsing. It's used to support DBM custom video
+    // events.
+    function DBMReporting() {
+      studio.video.Reporter.attach("video_0", dummyVideoElem, true);
+      studio.video.Reporter.attach("video_1", dummyVideoElem, true);
+      studio.video.Reporter.attach("video_2", dummyVideoElem, true);
+      studio.video.Reporter.attach("video_3", dummyVideoElem, true);
+      studio.video.Reporter.attach("video_4", dummyVideoElem, true);
+      studio.video.Reporter.attach("video_5", dummyVideoElem, true);
+      studio.video.Reporter.attach("video_6", dummyVideoElem, true);
+      studio.video.Reporter.attach("video_7", dummyVideoElem, true);
+      studio.video.Reporter.attach("video_8", dummyVideoElem, true);
+    }
+  </script>
+  <!-- Required for studio to fetch the lightbox standard json schema during ad creation -->
+  <script type="text/javascript" charset="UTF-8" src="./prod_studio_01_230_configurablemodule.js.&#12480;&#12454;&#12531;&#12525;&#12540;&#12489;"></script><script type="text/javascript" charset="UTF-8" src="./prod_studio_01_230_gdnmodule.js.&#12480;&#12454;&#12531;&#12525;&#12540;&#12489;"></script><script type="text/javascript" charset="UTF-8" src="./webfont.js.&#12480;&#12454;&#12531;&#12525;&#12540;&#12489;"></script><link rel="stylesheet" href="./css"><script type="text/javascript" charset="UTF-8" src="./iframe_api"></script><style class="themer-font">.font-themed {
+  font-family: 'Roboto', 'HelveticaNeue-Light', 'HelveticaNeue', 'Roboto', 'Open Sans', 'Arial', sans-serif !important;
+}</style><script type="text/javascript" charset="UTF-8" src="./prod_studio_01_230_videomodule.js.&#12480;&#12454;&#12531;&#12525;&#12540;&#12489;"></script></head><body class="dark desktop chrome windows web"><div id="invitation" class="view-container"><div id="cta" class="view-container"><div class="invitation-presenter square single-thumb"><div class="generated-background" style="background-image: linear-gradient(rgb(0, 188, 235) 30%, rgb(0, 28, 35) 100%);"></div><div class="caption-background"></div><div class="logo" style="background-image: url(&quot;https://s0.2mdn.net/simgad/1888338898235208106&quot;);"></div><div class="overlay"></div><div class="accent" style="background: rgb(0, 188, 235);"></div><div class="expand-icon" style="background-color: rgb(0, 188, 235);"></div><div class="custom-invite"><div class="foreground"></div><div class="custom-background"><canvas class="image-blurrer"></canvas></div></div><div class="caption font-themed active primary" style="line-height: 36px;"><div style="font-size: 10px;">Cisco Live 2019&nbsp;&#12513;&#12523;&#12508;&#12523;&#12531;&nbsp;&#12521;&#12452;&#12502;&#37197;&#20449;</div></div><div class="caption font-themed" style="line-height: 36px;"><div style="font-size: 10px;">3&#26376;6&#65293;7&#26085;&nbsp;Cisco Live!&nbsp;&#12513;&#12523;&#12508;&#12523;&#12531;&#12398;&#12475;&#12483;&#12471;&#12519;&#12531;&#12434;&#28961;&#26009;&#12391;&#12521;&#12452;&#12502;&#37197;&#20449;&#12290;&#21516;&#26178;&#36890;&#35379;&#20184;&#12365;&#12391;&#35222;&#32884;&#12356;&#12383;&#12384;&#12369;&#12414;&#12377;&#12290;</div></div><tetris-video-thumb class="thumb youtube active primary"><div class="icon"></div><div class="title font-themed"><div></div></div><div class="expand-icon"></div><div class="image" style="background-image: url(&quot;https://img.youtube.com/vi/QeQPdFOqCZQ/maxresdefault.jpg&quot;);"><img class="css-blurrer" src="./maxresdefault.jpg"></div><iframe class="player" style="width: 298px; height: 168px;" frameborder="0" allowfullscreen="1" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" title="YouTube video player" width="298" height="197" src="./QeQPdFOqCZQ.html" id="widget2"></iframe></tetris-video-thumb></div></div><div id="undefined" class="view-container"></div></div><div id="expanded" class="view-container" style="width: 100%; height: 100%; left: -9999px;"><div class="filmstrip-presenter hide-header landscape" style="background-color: rgb(0, 28, 35);"><header class="custom-header"></header><header class="generated-header" style="background-image: linear-gradient(rgb(0, 188, 235) 30%, rgb(0, 28, 35) 100%);"><div><div class="social-container"><div class="social-overlay-container"><div class="social-overlay"><div class="social-header"><div>&#12362;&#21839;&#12356;&#21512;&#12431;&#12379;</div></div></div></div><div class="social-button"></div></div></div><div class="rotator-container"><div class="rotator narrow"><div class="logo"><img src="./1888338898235208106"></div><div class="text-cta-container"><div class="text-cta-rotator"><div class="message text shown" style="right: 20px; line-height: 0px;"><div class="font-themed" style="font-size: 64px;">Cisco Live 2019&nbsp;&#12513;&#12523;&#12508;&#12523;&#12531;&nbsp;&#12521;&#12452;&#12502;&#37197;&#20449;</div></div><div class="message text" style="right: 20px; line-height: 0px;"><div class="font-themed" style="font-size: 64px;">3&#26376;6&#65293;7&#26085;&nbsp;Cisco Live!&nbsp;&#12513;&#12523;&#12508;&#12523;&#12531;&#12398;&#12475;&#12483;&#12471;&#12519;&#12531;&#12434;&#28961;&#26009;&#12391;&#12521;&#12452;&#12502;&#37197;&#20449;&#12290;&#21516;&#26178;&#36890;&#35379;&#20184;&#12365;&#12391;&#35222;&#32884;&#12356;&#12383;&#12384;&#12369;&#12414;&#12377;&#12290;</div></div><div class="message cta" style="width: 0px;"><button class="font-themed">&#20170;&#12377;&#12368;&#35222;&#32884;</button></div></div></div></div></div></header><div class="content"><div class="card-container one-card" style="right: 0px;"><tetris-video-card class="card primary small player-ready"><div class="image" style="background-image: url(&quot;https://img.youtube.com/vi/QeQPdFOqCZQ/maxresdefault.jpg&quot;);"><img class="css-blurrer" src="./maxresdefault.jpg"><div class="icon"></div></div><div class="dimmer"></div><div class="unmute"></div><iframe class="player" style="width: 300px; height: 250px;" frameborder="0" allowfullscreen="1" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" title="YouTube video player" width="300" height="250" src="./QeQPdFOqCZQ(1).html" id="widget4"></iframe><div class="youtube-title">Cisco Live &#12513;&#12523;&#12508;&#12523;&#12531; 2019 &#12521;&#12452;&#12502;&#37197;&#20449;<br><div class="icon"></div><span>8:50:09</span></div></tetris-video-card></div><div class="thumb-scroller portrait" style="background-image: linear-gradient(to top, rgb(0, 188, 235) 30%, rgb(0, 28, 35) 100%); width: 90px;"><div class="top-arrow hidden"><div></div></div><div class="left-arrow hidden"><div></div></div><div class="thumb-container"><tetris-video-thumb class="thumb selected youtube" style="width: 80px; height: 53px;"><div class="icon"></div><div class="title font-themed"><div></div></div><div class="expand-icon"></div><div class="image" style="background-image: url(&quot;https://img.youtube.com/vi/QeQPdFOqCZQ/maxresdefault.jpg&quot;);"><img class="css-blurrer" src="./maxresdefault.jpg"></div><div class="player"></div></tetris-video-thumb></div><div class="right-arrow hidden"><div></div></div><div class="bottom-arrow hidden"><div></div></div></div></div></div></div></body></html>
